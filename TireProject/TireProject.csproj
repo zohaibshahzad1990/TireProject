@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.4" />
+    <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Xamarin.Forms.InputKit" Version="4.1.6" />
+    <PackageReference Include="Xamarin.Controls.SignaturePad.Forms" Version="3.0.0" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.58.0.2826" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**/*" />
+    <None Include="**/*" />
+    <None Include="**/*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\PdfSharp.PCL\PdfSharp.PCL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="logo.png" />
+    <None Remove="obj\Debug\netstandard2.0\ExportReposrtPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\PrintTirelabelPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\ExportReportPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\MainPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\App.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\Views\NewExcelPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\Views\NewPrintPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\Views\NewDetailPage.xaml.g.cs" />
+    <None Remove="obj\Debug\netstandard2.0\Views\SettingsPage.xaml.g.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="logo.png" />
+  </ItemGroup>
+</Project>

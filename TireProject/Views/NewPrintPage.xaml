@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             BackgroundColor="#D4E3F3"
+             x:Class="TireProject.NewPrintPage">
+    <ContentPage.Content>
+      
+        <Grid>
+            <StackLayout Spacing="0">
+                <StackLayout VerticalOptions="FillAndExpand" x:Name="stk">
+                    
+                </StackLayout>
+                
+                <Grid Padding="10" BackgroundColor="#e74c3c" VerticalOptions="End">
+                    <Button Clicked="EveEmail" BackgroundColor="White" Text="Share" Grid.Column="0" TextColor="#e74c3c" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                    <Button Clicked="EvePrint" BackgroundColor="White" Text="Print" Grid.Column="1" TextColor="#e74c3c" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                    <Button Clicked="EveSign" BackgroundColor="White" Text="Sign" Grid.Column="2" TextColor="#e74c3c" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                </Grid>
+            </StackLayout>
+            
+            
+            <!--<ImageButton Clicked="Handle_Clicked" Source="icoprint" Padding="20" HeightRequest="80" HorizontalOptions="End" VerticalOptions="End"/>-->
+            <StackLayout x:Name="stkbusy">
+                <ActivityIndicator HeightRequest="20" Color="#e74c3c" x:Name="busy" IsRunning="true" IsVisible="true" VerticalOptions="Center"/>
+                <Label x:Name="lblbusy" IsVisible="true" Text="Loading Info From Server..." TextColor="#e74c3c" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout x:Name="stkBack" IsVisible="false" VerticalOptions="FillAndExpand" Opacity="0.7" BackgroundColor="Black">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="EveBack"/>
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            
+            <StackLayout x:Name="stksign" IsVisible="false" VerticalOptions="CenterAndExpand">
+                
+                    <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                        <ScrollView Margin="10" Grid.Row="0">
+                            <StackLayout>
+                                <Label BackgroundColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="Terms And Conditions" TextColor="Black" />
+                                <Label x:Name="lblterms" BackgroundColor="White" Text="" TextColor="Black" />
+                            </StackLayout>
+                        </ScrollView>
+                    <controls:SignaturePadView
+                    x:Name="signatureView"
+                    HeightRequest="150"
+                    CaptionText="Signature" PromptText=""
+                    StrokeWidth="3"
+                        VerticalOptions="CenterAndExpand"
+                    StrokeColor="Black"
+                    BackgroundColor="White"
+                    Margin="10,0"
+                     Grid.Row="1"/>
+                
+                    <Button x:Name="bbtn" VerticalOptions="Center" Grid.Row="2" Clicked="SignDoneEve" Padding="10,5" Margin="10,0" HorizontalOptions="CenterAndExpand" Text="DONE" BackgroundColor="White" TextColor="#e74c3c"/>
+                </Grid>
+             
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

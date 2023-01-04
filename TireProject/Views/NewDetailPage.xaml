@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#D4E3F3"
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+             x:Class="TireProject.NewDetailPage">
+    <ContentPage.Content>
+     <Grid>
+            <StackLayout Spacing="0">
+                <StackLayout VerticalOptions="Start" HeightRequest="60" Orientation="Horizontal" x:Name="gr" BackgroundColor="#e74c3c">
+                        <ImageButton Clicked="Handle_Clicked_11" Padding="10" VerticalOptions="CenterAndExpand" HorizontalOptions="Start" Source="icoback" HeightRequest="40"/>
+                        <Label HeightRequest="40" Text="Customer Detail" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalOptions="CenterAndExpand" TextColor="White"/>
+                        <Label HeightRequest="40" Margin="0,0,10,0" x:Name="tooitem" Text="SAVE" VerticalTextAlignment="Center" HorizontalOptions="End" VerticalOptions="CenterAndExpand" TextColor="White">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Handle_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                
+                <ScrollView> 
+                <StackLayout VerticalOptions="FillAndExpand">
+                    <Frame x:Name="frpersonal" IsVisible="true" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                <StackLayout>
+                    <Label Margin="10" Text="Customer Details" HorizontalOptions="CenterAndExpand" TextColor="#e74c3c"/>
+                    <Grid>
+                        <Entry x:Name="enrefno" IsEnabled="false" Text="" Placeholder="Ref No." Grid.Row="0" Grid.Column="0"/>
+                        <DatePicker x:Name="endate" Grid.Row="0" Grid.Column="1"/>
+                   </Grid>
+                                
+                    <Grid>
+                        <Entry x:Name="enfirst" Text="" Placeholder="First Name" Grid.Row="0" Grid.Column="0"/>
+                                    <Entry x:Name="enmi" Text="" Placeholder="Middle Name" Grid.Row="0" Grid.Column="1"/>
+                        <Entry x:Name="ensecond" Text="" Placeholder="last Name" Grid.Row="0" Grid.Column="2"/> 
+                    </Grid>
+
+                <Entry x:Name="enaddress" HeightRequest="50" Text="" Placeholder="Address"/>
+                <Grid>
+                        <Entry x:Name="enphone" Keyboard="Telephone" Text="" Placeholder="Phone No." Grid.Column="0"/>
+                <Entry x:Name="enhome" Text="" Keyboard="Telephone" Placeholder="Home" Grid.Column="1"/>
+                <Entry x:Name="enwork" Text="" Keyboard="Telephone" Placeholder="Work" Grid.Column="2"/>
+                
+                    </Grid>
+                    <Entry x:Name="enemail" Text="" Placeholder="Email"/>
+                </StackLayout>
+            </Frame>
+                        
+            <Frame x:Name="frtiredetail" IsVisible="false" Margin="10,10,10,500" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                <StackLayout>
+                    <Label Margin="10" Text="Tire Storage Details" HorizontalOptions="CenterAndExpand" TextColor="#e74c3c"/>
+                         
+                    <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                                <Label VerticalOptions="CenterAndExpand" Text="Types of Tires" Grid.Row="0" Grid.Column="0" /> 
+                               
+                                    <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3">
+                                        <input:RadioButtonGroupView x:Name="rad" SelectedItemChanged="Handle_SelectedItemChanged" Orientation="Horizontal">
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" TextFontSize="12" IsChecked="true" Text="A/S" />
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" TextFontSize="12" Text="Sum" />
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" TextFontSize="12" Text="Win" />
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" TextFontSize="12" Text="Oth" />
+                                    </input:RadioButtonGroupView>
+                                    </StackLayout>
+                                    
+                                    <Label VerticalOptions="CenterAndExpand" Text="NUMBER OF TIRES" Grid.Row="1" Grid.Column="0"/>
+                                    <Entry x:Name="ennumtyre" Keyboard="Numeric" Text="" Placeholder="No." Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
+                         </Grid>
+
+                    <StackLayout Orientation="Horizontal">
+                                <Label VerticalOptions="CenterAndExpand" Text="IF STAGGERED"/>
+                                <StackLayout>
+                                        <input:RadioButtonGroupView x:Name="radstag" SelectedItemChanged="Handle_SelectedItemChanged_1" Orientation="Horizontal">
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" Text="Yes" />
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" IsChecked="true" TextFontSize="12" Text="No" />
+                                    </input:RadioButtonGroupView>
+                                    </StackLayout>
+                                    </StackLayout>
+                             
+                                <StackLayout x:Name="stkstagtire" Orientation="Horizontal">
+                                    <Label VerticalOptions="CenterAndExpand" Text="TIRE SIZE" />
+                        <Entry TextChanged="Tire11" x:Name="entiresize11" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                    <Label VerticalOptions="CenterAndExpand" Text="/"/>
+                                    <Entry TextChanged="Tire12" x:Name="entiresize12" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                    <Label VerticalOptions="CenterAndExpand" Text="/"/>
+                                    <Entry TextChanged="Tire13" x:Name="entiresize13" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                    
+                                </StackLayout>
+                                
+                                
+                                
+                                
+                                
+                                <StackLayout x:Name="stkstag" Spacing="0">
+                                    <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="lt2" VerticalOptions="CenterAndExpand" Text="TIRE SIZE REAR"/>
+                                    <Entry TextChanged="Tire21" x:Name="entiresize21" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                        <Label VerticalOptions="CenterAndExpand" Text="/"/>
+                                    <Entry TextChanged="Tire22" x:Name="entiresize22" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                        <Label VerticalOptions="CenterAndExpand" Text="/"/>
+                                    <Entry TextChanged="Tire23" x:Name="entiresize23" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                    
+                                </StackLayout>
+                                
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="lt3" VerticalOptions="CenterAndExpand" Text="TIRE SIZE FRONT"/>
+                                    <Entry TextChanged="Tire31" x:Name="entiresize31" Keyboard="Numeric" Text="" Placeholder="Tire Size" />
+                                    <Label VerticalOptions="CenterAndExpand" Text="/"/>
+                                    <Entry TextChanged="Tire32" x:Name="entiresize32" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                    <Label VerticalOptions="CenterAndExpand" Text="/"/>
+                                    <Entry TextChanged="Tire33" x:Name="entiresize33" Keyboard="Numeric" Text="" Placeholder="Tire Size"/>
+                                    
+                                </StackLayout>
+                                </StackLayout>
+                                    
+                        
+                                    
+                                    
+                                <Grid>
+                                    <Label Text="TIRE BRAND :" VerticalOptions="CenterAndExpand" Grid.Column="0"/>
+                        <Entry x:Name="entiremake" Text="" Placeholder="Tire Brand" Grid.Column="1" Grid.ColumnSpan="3"/>
+                             
+                                </Grid>    
+                                
+                                
+                                <Label VerticalOptions="CenterAndExpand" Text="RIMS ATTACHED" /> 
+                                <StackLayout >
+                                    <input:RadioButtonGroupView x:Name="radrimatt" SelectedItemChanged="Handle_SelectedItemChanged_2" Orientation="Horizontal">
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" IsChecked="true" Text="Yes" />
+                                        <input:RadioButton Color="#e73c3c" CircleColor="#e74c3c" TextFontSize="12" Text="No" />
+                                    </input:RadioButtonGroupView>
+                                </StackLayout>
+                                
+                                <StackLayout x:Name="stkrimst">
+                                    <Label x:Name="ltr" VerticalOptions="CenterAndExpand" Text="TYPES OF RIMS" /> 
+                                    <!--<Button Text="STEEL" IsVisible="false" TextColor="#e74c3c" x:Name="enrimtype" Clicked="Handle_Clicked_3" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>-->
+                                    <Grid x:Name="grbtnsave">
+                        <Button Clicked="EveBtnRimType" Grid.Row="0" Grid.Column="0" Text="STEEL" TextColor="#e74c3c" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                        <Button Clicked="EveBtnRimType" Grid.Row="0" Grid.Column="1" Text="ALLOY" TextColor="#e74c3c" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                        <Button Clicked="EveBtnRimType" Grid.Row="1" Grid.Column="0" Text="OEM" TextColor="#e74c3c" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                        <Button Clicked="EveBtnRimType" Grid.Row="1" Grid.Column="1" Text="OTHER" TextColor="#e74c3c" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    </Grid>
+                                </StackLayout>
+                    
+                                
+                                <Label Text="TIRE DEPTH :" />
+                                
+                                    <StackLayout Orientation="Horizontal">
+                                    <Button x:Name="b1" BorderWidth="3" BorderColor="#92D050" BackgroundColor="#92D050" Text="70%-80%" TextColor="Black" Clicked="Handle_Clicked_14" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"/>  
+                                    <Button x:Name="b2" BorderWidth="3" BorderColor="#FFFF02" BackgroundColor="#FFFF02" Text="50%-70%" TextColor="Black" Clicked="Handle_Clicked_15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"/>  
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Button x:Name="b3" BorderWidth="3" BorderColor="#FDC000" BackgroundColor="#FDC000" Text="30%-50%" TextColor="Black" Clicked="Handle_Clicked_16" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"/>  
+                                    <Button x:Name="b4" BorderWidth="3" BorderColor="#FA1100" BackgroundColor="#FA1100" Text="10%-30%" TextColor="Black" Clicked="Handle_Clicked_17" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"/>  
+                                </StackLayout>
+                               <Label VerticalOptions="CenterAndExpand" Text="TIRE STORED UPTO" Grid.Row="0" Grid.Column="0"/>
+                                
+                                 <StackLayout x:Name="sttt1" Orientation="Horizontal">
+                                     <Button Clicked="EveBtnSeason" x:Name="btseason1" TextColor="#e74c3c" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="NEXT SUMMER"/>
+                                     <Button Clicked="EveBtnSeason" x:Name="btseason2" TextColor="#e74c3c" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="NEXT WINTER"/>
+                                 </StackLayout>
+                                   <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                              
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                        
+                                 </Grid.RowDefinitions>   
+                                <Label VerticalOptions="CenterAndExpand" Text="REP:" Grid.Row="1" Grid.Column="0"/>
+                                <Entry x:Name="enrep" Text="" Placeholder="REP" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
+                                    
+                                    <Label VerticalOptions="CenterAndExpand" Text="REMARKS:" Grid.Row="2" Grid.Column="0"/>
+                                <Entry x:Name="enremark" Text="" Placeholder="Remarks" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
+                            </Grid>
+                </StackLayout>
+            </Frame>
+                   
+                    <Frame x:Name="frvehicledetail" IsVisible="true" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                <StackLayout>
+                    <Label Margin="10" Text="VEHICLES DETAILS" HorizontalOptions="CenterAndExpand" TextColor="#e74c3c"/>
+                    <Grid>
+                        <Entry x:Name="enplateno" Text="" Placeholder="Plate Number" Grid.Row="0" Grid.Column="0"/>
+                        <Entry x:Name="encartyear" Text="" Placeholder="Car Year" Grid.Row="0" Grid.Column="1"/> 
+                        <Entry x:Name="encarbrand" Text="" Placeholder="Car Make" Grid.Row="1" Grid.Column="0"/>
+                        <Entry x:Name="encarmodel" Text="" Placeholder="Car Model" Grid.Row="1" Grid.Column="1"/> 
+                    </Grid>
+                </StackLayout>
+            </Frame>
+                    
+                   
+                        <Frame x:Name="frstoragedetail" IsVisible="true" Margin="10,10,10,500" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                <StackLayout>
+                    <Grid>
+                        <Label VerticalOptions="CenterAndExpand" Text="Storage Location (Official Use Only)" TextColor="Black" Grid.Row="0" Grid.Column="0"/>
+                        <Button Clicked="Handle_Clicked_19" TextColor="#e74c3c" VerticalOptions="CenterAndExpand" x:Name="enwarehouse" Text="Warehouse" Grid.Row="0" Grid.Column="1"/>
+                        <Entry VerticalOptions="CenterAndExpand" x:Name="enstorageloc" Text="" Placeholder="Storage Location" Grid.Row="0" Grid.Column="2"/> 
+                    </Grid>
+                </StackLayout>
+            </Frame>
+                        
+                        
+                        
+                    <Frame x:Name="frphotos" IsVisible="false" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                <StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Margin="10" Text="PHOTOS" HorizontalOptions="CenterAndExpand" TextColor="#e74c3c"/>
+                                    <ImageButton Clicked="Handle_Clicked_10" Source="btrash" HeightRequest="20"/>
+                                </StackLayout>
+                    
+                        <ScrollView Orientation="Horizontal">
+                                <StackLayout x:Name="stkimage" Orientation="Horizontal">
+                                    
+                                </StackLayout>
+                            </ScrollView>
+                    <ImageButton Clicked="Handle_Clicked_4" HeightRequest="55" Source="icocamera" />
+                    
+                </StackLayout>
+            </Frame>
+                
+                   <Button x:Name="btnDone" IsVisible="false" Clicked="EveButtonDone" Margin="10" Padding="10,5" Text="Delete Record" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BorderWidth="0" BackgroundColor="White"/>  
+                    <Label x:Name="lblmsg" TextColor="Red" Text="" HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+            </ScrollView>
+                <StackLayout VerticalOptions="End" Orientation="Horizontal">
+                        <Button x:Name="btnNext" Clicked="EveButtonNext" Margin="10" Padding="10,5" Text="Next" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BorderWidth="0" BackgroundColor="White"/> 
+                    </StackLayout>
+                </StackLayout>
+    
+    
+            <StackLayout x:Name="stkBack" IsVisible="false" VerticalOptions="FillAndExpand" Opacity="0.7" BackgroundColor="Black">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="EveBack"/>
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            
+            
+            <Frame x:Name="selware" IsVisible="false" Margin="20" Padding="0,5" VerticalOptions="Center" HasShadow="false" BackgroundColor="White">
+                <ListView x:Name="listware" HeightRequest="205" VerticalOptions="Center" HasUnevenRows="true" SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Spacing="0">
+                                    <Button Clicked="Handle_Clicked_18" HeightRequest="50" BorderWidth="0" BackgroundColor="Transparent" Text="{Binding .}" TextColor="#e74c3c"/>
+                                    <BoxView HeightRequest="1" BackgroundColor="#D4E3F3"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+            
+            <Frame x:Name="frmsg" HasShadow="false" IsVisible="false" Margin="20,0,20,100" BackgroundColor="#e74c3c" VerticalOptions="End">
+                <Label x:Name="lblpopmsg" Text="" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="White"/>
+            </Frame>
+            <Frame x:Name="frdelete" IsVisible="false" Margin="20,0,20,100" BackgroundColor="#e74c3c" VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <Label Text="Are you sure you want to delete last picture? " HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="White"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Button Clicked="Handle_Clicked_8" Text="Delete" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BackgroundColor="White"/>
+                        <Button Clicked="Handle_Clicked_9" Text="Cancel" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BackgroundColor="White"/>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+            
+            <Frame x:Name="frdeleterec" IsVisible="false" Margin="20,0,20,100" BackgroundColor="#e74c3c" VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <Label Text="Are you sure you want to delete this record? " HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="White"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Button Clicked="Handle_Clicked_12" Text="Delete" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BackgroundColor="White"/>
+                        <Button Clicked="Handle_Clicked_13" Text="Cancel" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BackgroundColor="White"/>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+
+         <StackLayout x:Name="printtype" BackgroundColor="#80000000" IsVisible="false" Scale="0">
+                <Frame Margin="10" Padding="0,5" CornerRadius="10" HasShadow="false" VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                <Button Clicked="EveMainPage" Text="Back to Home Page" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EvePrintA4" Text="Print A4" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EvePrintA6" Text="Print A6" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                    <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EvePrintPdf" Text="Print PDF" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                </StackLayout>
+            </Frame>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+

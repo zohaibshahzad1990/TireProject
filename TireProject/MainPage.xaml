@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:local="clr-namespace:TireProject"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             x:Class="TireProject.MainPage">
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout Spacing="0">
+                <Grid HeightRequest="70" BackgroundColor="{x:StaticResource AppColor}" VerticalOptions="StartAndExpand">
+                    <!--<local:GradientColorStack StartColor="#de7266" EndColor="{x:StaticResource AppColor}"/>-->
+                    <Label Text="Total Tire Inc." TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold" />
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                        <ActivityIndicator VerticalOptions="CenterAndExpand" HeightRequest="20" x:Name="busy" IsVisible="true" IsRunning="true" Color="White"/>
+                        <ImageButton BackgroundColor="{StaticResource AppColor}" Clicked="EveSort" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" HeightRequest="70" Padding="15" Source="sort"/>
+                    </StackLayout>
+                    <ImageButton BackgroundColor="{StaticResource AppColor}" Clicked="EveMenu" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" HeightRequest="70" Padding="15" Source="menu"/>
+                </Grid>
+                <StackLayout BackgroundColor="White">
+                    <StackLayout Spacing="0" BackgroundColor="White" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                        <Entry Margin="5,0,0,0" VerticalOptions="CenterAndExpand" x:Name="ensearch" FontSize="Medium" Completed="Handle_Completed" HorizontalOptions="FillAndExpand" Text="" Placeholder="What Are You Searching For?" PlaceholderColor="#e74c3c" TextColor="#e74c3c"/>
+                        <ImageButton BackgroundColor="White" x:Name="searchBtn" VerticalOptions="CenterAndExpand" Clicked="EveSearch" Padding="15" Source="icosearch" HeightRequest="50"/>
+                    </StackLayout>
+
+                    <Label x:Name="lblempty" IsVisible="false" HorizontalTextAlignment="Center" Text="No Record Found!" TextColor="#e74c3c"/>
+
+                    <CollectionView ItemsLayout="VerticalList" Margin="0" x:Name="listmain" SelectionMode="None" BackgroundColor="White" ItemSizingStrategy="MeasureFirstItem" >
+                        <!--<CollectionView.EmptyView>
+                            
+                        </CollectionView.EmptyView>-->
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnSpacing="0" RowSpacing="0" BackgroundColor="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+                    <ff:CachedImage LoadingPlaceholder="bttrash" Aspect="Fill" Grid.Row="0" Grid.Column="0" MinimumHeightRequest="50" Margin="0" BackgroundColor="White" Source="{Binding Pic1}"/>
+                    <BoxView Grid.Row="0" VerticalOptions="FillAndExpand" Grid.Column="1" WidthRequest="1" BackgroundColor="#D4E3F3"/>
+                    <StackLayout Grid.Row="0" Grid.Column="2" Margin="10" VerticalOptions="CenterAndExpand">
+                                                <Label TextColor="#666666" FontSize="Medium" Text="{Binding FName}"/>
+                                                <Label TextColor="#666666" FontSize="Small" Text="{Binding PlateNo}"/>
+                                            <Label TextColor="#666666" FontSize="Small" Text="{Binding PhoneNo}"/>
+                                                <Label TextColor="#666666" FontSize="Small" Text="{Binding Date}"/>
+                                            <Label TextColor="#666666" FontSize="Small" Text="{Binding ExtraRefNo}"/>
+                                            <Label TextColor="#666666" FontSize="Small" Text="{Binding CarBrand}"/>
+                                            <Label TextColor="#666666" FontSize="Small" Text="{Binding CarModel}"/>
+                                        </StackLayout>
+                                    <Button Grid.ColumnSpan="4" BackgroundColor="Transparent" Clicked="Handle_ItemTapped"/>
+                                        <ImageButton Clicked="EveShowPrint" Padding="40" Grid.Row="0" Grid.Column="3" HeightRequest="40" BackgroundColor="White" HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" Source="icoprint"/>
+                    <BoxView Grid.Row="1" Grid.ColumnSpan="4" BackgroundColor="#D4E3F3" HeightRequest="1"/>
+                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
+            <Frame BackgroundColor="{StaticResource AppColor}" Padding="15,0" CornerRadius="20" HeightRequest="40" Margin="20" HasShadow="false" HorizontalOptions="End" VerticalOptions="End">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="EveNew"/>
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Image HeightRequest="15" VerticalOptions="CenterAndExpand" Source="icoadd" />
+                    <Label Text="New Entry" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="12" FontAttributes="Bold" TextColor="White"/>
+                </StackLayout>
+            </Frame>
+            <StackLayout x:Name="sortstk" BackgroundColor="#80000000" IsVisible="false" Scale="0">
+                <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="EveClose"/>
+                    </StackLayout.GestureRecognizers>
+                <Frame Margin="10" Padding="0,5" CornerRadius="10" HasShadow="false" VerticalOptions="CenterAndExpand">
+                <StackLayout x:Name="stkchild">
+                <Button Clicked="EveSort1" Text="NAME (ASCENDING)" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                    <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EveSort2" Text="NAME (DESCENDING)" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                    <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EveSort3" Text="DATE (ASCENDING)" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                    <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EveSort4" Text="DATE (DESCENDING)" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                    <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EveSort5" Text="PLATE NUMBER" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                </StackLayout>
+            </Frame>
+            </StackLayout>
+            <Grid RowSpacing="0" x:Name="menubox" IsVisible="true">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid BackgroundColor="{x:StaticResource AppColor}">
+                    <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+                    <!--<local:GradientColorStack Grid.RowSpan="9" StartColor="#de7266" EndColor="{x:StaticResource AppColor}"/>-->
+                    <Label Grid.Column="0" VerticalOptions="CenterAndExpand" Grid.Row="0" Margin="10" Text="Home" TextColor="White" FontAttributes="Bold" FontSize="Medium"/>
+                    <Button BackgroundColor="Transparent" Clicked="EveBtnMenu1"/>
+            <BoxView Grid.Column="0" Grid.Row="1" BackgroundColor="White" HeightRequest="1"/>
+            <Label Grid.Column="0" VerticalOptions="CenterAndExpand" Margin="10" Grid.Row="2" Text="Settings" TextColor="White" FontAttributes="Bold" FontSize="Medium"/>
+                    <Button BackgroundColor="Transparent" Clicked="EveBtnMenu2" Grid.Row="2"/>
+            <BoxView Grid.Column="0" Grid.Row="3" BackgroundColor="White" HeightRequest="1"/>
+            <Label Grid.Column="0" VerticalOptions="CenterAndExpand" Margin="10" Grid.Row="4" Text="Export Data" TextColor="White" FontAttributes="Bold" FontSize="Medium"/>
+                    <Button BackgroundColor="Transparent" Clicked="EveBtnMenu3" Grid.Row="4"/>
+            <BoxView Grid.Column="0" Grid.Row="5" BackgroundColor="White" HeightRequest="1"/>
+            <Label Grid.Column="0" VerticalOptions="CenterAndExpand" Margin="10" Grid.Row="6" Text="Reports" TextColor="White" FontAttributes="Bold" FontSize="Medium"/>
+                    <Button BackgroundColor="Transparent" Clicked="EveBtnMenu4" Grid.Row="6"/>
+            <BoxView Grid.Column="0" Grid.Row="7" BackgroundColor="White" HeightRequest="1"/>
+                    <Label Grid.Column="0" VerticalOptions="CenterAndExpand" Margin="10" Grid.Row="8" Text="Version 1.8" TextColor="White" FontAttributes="Bold" FontSize="Medium"/>
+            <BoxView Grid.Column="0" Grid.Row="9" BackgroundColor="White" HeightRequest="1"/>
+                </Grid>
+                <StackLayout Grid.Column="1">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="EveClose"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+        </Grid>
+            <StackLayout x:Name="clonepop" IsVisible="false">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="EveClonePopClose"/>
+                </StackLayout.GestureRecognizers>
+                <Frame Margin="10" BorderColor="{StaticResource AppColor}" CornerRadius="10" BackgroundColor="White" VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <Label Text="Select an Option" FontAttributes="Bold" TextColor="{StaticResource AppColor}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Clicked="EveClone" Text="Clone" HorizontalOptions="CenterAndExpand" BackgroundColor="White" TextColor="{StaticResource AppColor}"/>
+                    <Button Clicked="EveEdit" Text="Edit" HorizontalOptions="CenterAndExpand" BackgroundColor="White" TextColor="Green"/>
+                </StackLayout>
+                </StackLayout>
+            </Frame>
+                </StackLayout>
+            <StackLayout x:Name="exit" IsVisible="false">
+                <Frame Margin="10" BorderColor="{StaticResource AppColor}" CornerRadius="10" BackgroundColor="White" VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <Label Text="Quit?" FontAttributes="Bold" TextColor="{StaticResource AppColor}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Clicked="EveYes" Text="Yes" HorizontalOptions="CenterAndExpand" BackgroundColor="White" TextColor="{StaticResource AppColor}"/>
+                    <Button Clicked="EveNo" Text="No" HorizontalOptions="CenterAndExpand" BackgroundColor="White" TextColor="Green"/>
+                </StackLayout>
+                </StackLayout>
+            </Frame>
+            </StackLayout>
+            <StackLayout x:Name="printtype" BackgroundColor="#80000000" IsVisible="false" Scale="0">
+                <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="EveClose"/>
+                    </StackLayout.GestureRecognizers>
+                <Frame Margin="10" Padding="0,5" CornerRadius="10" HasShadow="false" VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                <Button Clicked="EvePrintPDF" Text="Print PDF" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EvePrintA4" Text="Print A4" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
+                <Button Clicked="EvePrintA6" Text="Print A6" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                </StackLayout>
+            </Frame>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

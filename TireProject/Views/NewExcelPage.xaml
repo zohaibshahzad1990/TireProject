@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             BackgroundColor="#D4E3F3"
+             Title="Export Data"
+             x:Class="TireProject.NewExcelPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Margin="10" HasShadow="false" BackgroundColor="White">
+                <StackLayout>
+                    <Label Text="Export Data to Google Sheet" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="#e74c3c"/>
+                
+                    <Label x:Name="busymsg" Text="Exporting Data..." HorizontalTextAlignment="Center" TextColor="#e74c3c"/>
+                    <ActivityIndicator x:Name="busyind" Color="#e74c3c" IsRunning="true" IsVisible="true"/>                
+                    <Button x:Name="btnDone" IsVisible="false" Clicked="Handle_Clicked" Margin="10" Padding="10,5" Text="Open Google Sheet In Browser" HorizontalOptions="FillAndExpand" TextColor="#e74c3c" BorderColor="#e74c3c" BorderWidth="1" BackgroundColor="White"/>  
+                </StackLayout>
+            </Frame> 
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

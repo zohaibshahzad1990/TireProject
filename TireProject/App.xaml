@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="TireProject.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Styles -->
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="#e74c3c"/>
+                <Setter Property="BarTextColor" Value="White"/>
+            </Style>
+            
+            
+            <Color x:Key="AppColor">#e74c3c</Color>
+            
+            <Style TargetType="Button" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor" Value="#136CE4"/>
+              </Style>
+            
+            <Style TargetType="ImageButton" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+              </Style>
+            
+            
+             <!--  font families  -->
+           <!-- <OnPlatform x:Key="bold" x:TypeArguments="x:String">
+                <On Platform="iOS">Roboto-Bold</On>
+                <On Platform="Android">Roboto-Bold.ttf#Roboto-Bold</On>
+            </OnPlatform>
+            <OnPlatform x:Key="bolditalic" x:TypeArguments="x:String">
+                <On Platform="iOS">Roboto-BoldItalic</On>
+                <On Platform="Android">Roboto-BoldItalic.ttf#Roboto-BoldItalic</On>
+            </OnPlatform>
+            <OnPlatform x:Key="regular" x:TypeArguments="x:String">
+                <On Platform="iOS">Roboto-Regular</On>
+                <On Platform="Android">Roboto-Regular.ttf#Roboto-Regular</On>
+            </OnPlatform>
+            <OnPlatform x:Key="medium" x:TypeArguments="x:String">
+                <On Platform="iOS">Roboto-Medium</On>
+                <On Platform="Android">Roboto-Medium.ttf#Roboto-Medium</On>
+            </OnPlatform>
+            <OnPlatform x:Key="mediumitalic" x:TypeArguments="x:String">
+                <On Platform="iOS">Roboto-MediumItalic</On>
+                <On Platform="Android">Roboto-MediumItalic.ttf#Roboto-MediumItalic</On>
+            </OnPlatform>-->
+            </ResourceDictionary>
+    </Application.Resources>
+</Application>

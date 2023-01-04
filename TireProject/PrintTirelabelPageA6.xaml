@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Barcode"
+    x:Class="TireProject.PrintTirelabelPageA6">
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout>
+                <StackLayout VerticalOptions="FillAndExpand" x:Name="stk">
+                    
+                </StackLayout>
+                <Button x:Name="printbtn" Clicked="EvePrint" IsEnabled="False" BackgroundColor="White" Text="Print" TextColor="#e74c3c" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+            </StackLayout>
+            <StackLayout x:Name="stkmain" BackgroundColor="#80000000">
+                <Label Text="" x:Name="lblbusy" TextColor="White" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand"/>
+                <ActivityIndicator HeightRequest="20" Color="White" x:Name="busy"/>
+                </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
