@@ -30,9 +30,13 @@ namespace TireProject
             InitializeComponent();
 
             reportData = rep;
-            PageRun();
+           
         }
-
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            await PageRun();
+        }
         void Handle_Clicked(object sender, System.EventArgs e)
         {
             var getCommand = (ImageButton)sender;
@@ -57,7 +61,7 @@ namespace TireProject
             stkbusy.IsVisible = true;
             var systemHelper = DependencyService.Get<ISystemHelper>();
             var document = new PdfDocument();
-
+           
             var page = document.AddPage();
 
             var gfx = XGraphics.FromPdfPage(page);
@@ -72,8 +76,8 @@ namespace TireProject
             center.Alignment = XParagraphAlignment.Center;
 
             var fontName = systemHelper.GetDefaultSystemFont();
-
-            var font = new XFont(fontName, 20);
+            
+           var font = new XFont(fontName, 20);
             var fontBold = new XFont(fontName, 20, XFontStyle.Regular);
             var fontItalic = new XFont(fontName, 20, XFontStyle.Italic);
 

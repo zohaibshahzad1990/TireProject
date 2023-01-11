@@ -15,20 +15,24 @@ namespace TireProject
     {
         GetOnlineData post = new GetOnlineData();
         List<ReportData> ll = new List<ReportData>();
+        private readonly Uri _uri=null;
 
         public NewExcelPage()
         {
             InitializeComponent();
-            RunPage();
         }
-
-        public NewExcelPage(Uri uri)
+        protected async override void OnAppearing()
         {
-            InitializeComponent();
+            base.OnAppearing();
+            if (_uri == null)
+                await RunPage();
+            else
+                await RunPageByURI();
 
-
-            Uri myUri = new Uri(uri.OriginalString);
-            string code = System.Web.HttpUtility.ParseQueryString(myUri.Query).Get("code");
+        }
+        async Task RunPageByURI()
+        {
+            string code = System.Web.HttpUtility.ParseQueryString(_uri.Query).Get("code");
 
             string ClientId = "";
             string redirectUri = "";
@@ -43,7 +47,17 @@ namespace TireProject
                 redirectUri = @"com.googleusercontent.apps.976132508244-8vjvj9sboohdd1gq07ftb7vkus3srfg5:oauth2redirect";
             }
 
-            GetTokenReport(code, redirectUri, ClientId);
+            await GetTokenReport(code, redirectUri, ClientId);
+        }
+
+        public NewExcelPage(Uri uri)
+        {
+            InitializeComponent();
+
+
+            _uri = new Uri(uri.OriginalString);
+           
+           
         }
 
 
@@ -200,7 +214,7 @@ namespace TireProject
                     if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
                         Application.Current.Properties.Remove("Token");
-                        RunPage();
+                       await RunPage();
                         return;
                     }
                     Device.BeginInvokeOnMainThread(() =>
@@ -284,7 +298,7 @@ namespace TireProject
                 var sss = JsonConvert.SerializeObject(ddd);
 
                 Application.Current.Properties["Token"] = sss;
-                RunPage();
+                await RunPage();
             }
 
             else

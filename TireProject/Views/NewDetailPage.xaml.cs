@@ -44,7 +44,7 @@ namespace TireProject
             });
         }
 
-        public NewDetailPage(ReportData report,int cloneornot)
+        public NewDetailPage(ReportData report, int cloneornot)
         {
             InitializeComponent();
             gr.Padding = new Thickness(0, Device.RuntimePlatform == Device.iOS ? App.StatusBarHeight : 0, 0, 0);
@@ -53,7 +53,7 @@ namespace TireProject
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    if(cloneornot==0)
+                    if (cloneornot == 0)
                     {
                         post = true;
                         //reportData = report;
@@ -371,7 +371,7 @@ namespace TireProject
                         }
                         listware.ItemsSource = new List<string> { "HR", "FV", "DC", "OR", "UT" };
                     }
-                    
+
                 });
             });
         }
@@ -699,13 +699,22 @@ namespace TireProject
                     {
                         busycheck = true;
                         stkBack.IsVisible = true;
-                        await SaveData();
+                        var reportDataAfterSave = await SaveData();
                         //Check
                         frmsg.IsVisible = true;
                         lblpopmsg.Text = "Getting Data For Printing...";
-                        var ll = await getOnline.GetAllData();
-                        getOnline.DataList = ll;
-                        reportData = getOnline.DataList.Where(z => z.FName.Equals(reportData.FName) && z.CarBrand.Equals(reportData.CarBrand) && z.CarYear.Equals(reportData.CarYear) && z.CarModel.Equals(reportData.CarModel) && z.ExtraRefNo.Equals(reportData.ExtraRefNo) && z.PlateNo.Equals(reportData.PlateNo) && z.RimAttached.Equals(reportData.RimAttached)).OrderByDescending(x => x.Id).FirstOrDefault();
+                        if (getOnline.DataList == null)
+                        {
+                            getOnline.DataList = new List<ReportData>();
+                        }
+                        var oldRecord = getOnline.DataList.Where(x => x.Id == reportDataAfterSave.Id).FirstOrDefault();
+                        if (oldRecord != null)
+                        {
+                            getOnline.DataList.RemoveAll(x => x.Id == reportDataAfterSave.Id);
+                        }
+                        getOnline.DataList.Add(reportDataAfterSave);
+
+                        reportData = reportDataAfterSave;
                         //Check
                         stkBack.IsVisible = false;
                         busycheck = false;
@@ -723,13 +732,22 @@ namespace TireProject
                         busycheck = true;
                         stkBack.IsVisible = true;
 
-                        await SaveData();
+                        var reportDataAfterSave = await SaveData();
                         //Check
                         frmsg.IsVisible = true;
                         lblpopmsg.Text = "Getting Data For Printing...";
-                        var ll = await getOnline.GetAllData();
-                        getOnline.DataList = ll;
-                        reportData = getOnline.DataList.Where(z => z.FName.Equals(reportData.FName) && z.CarBrand.Equals(reportData.CarBrand) && z.CarYear.Equals(reportData.CarYear) && z.CarModel.Equals(reportData.CarModel) && z.ExtraRefNo.Equals(reportData.ExtraRefNo) && z.PlateNo.Equals(reportData.PlateNo) && z.RimAttached.Equals(reportData.RimAttached)).OrderByDescending(x => x.Id).FirstOrDefault();
+                        if (getOnline.DataList == null)
+                        {
+                            getOnline.DataList = new List<ReportData>();
+                        }
+                        var oldRecord = getOnline.DataList.Where(x => x.Id == reportDataAfterSave.Id).FirstOrDefault();
+                        if (oldRecord != null)
+                        {
+                            getOnline.DataList.RemoveAll(x => x.Id == reportDataAfterSave.Id);
+                        }
+                        getOnline.DataList.Add(reportDataAfterSave);
+
+                        reportData = reportDataAfterSave;
                         //Check
 
                         ShowPrint();
@@ -831,7 +849,7 @@ namespace TireProject
                 return true;
             }
         }
-        async Task SaveData()
+        async Task<ReportData> SaveData()
         {
             frmsg.IsVisible = true;
             reportData.MName = enmi.Text.Trim();
@@ -861,7 +879,7 @@ namespace TireProject
                 reportData.ExtraDate = enremark.Text.Trim();
             reportData.Date = endate.Date.ToString("yyyy-MM-dd");
             reportData.TireStoredUpto = reportData.TireStoredUpto;
-
+            ReportData reportDateAfterSave = null;
             if (im1 != null)
             {
                 if (!im1.Contains("http"))
@@ -940,10 +958,14 @@ namespace TireProject
                 var res = await getOnline.PutAsync(reportData.Id, reportData);
                 if (res)
                 {
-                    lblpopmsg.Text = "Success";
+                    reportDateAfterSave = await getOnline.GetAsync(reportData.Id);
+                    if (reportDateAfterSave != null)
+                    {
+                        lblpopmsg.Text = "Success";
 
 
-                    frmsg.IsVisible = false;
+                        frmsg.IsVisible = false;
+                    }
                     //Application.Current.MainPage = new NavigationPage(new MainPage());
                     //return;
                 }
@@ -954,8 +976,8 @@ namespace TireProject
             }
             else
             {
-                var res = await getOnline.PostAsync(reportData);
-                if (res)
+                reportDateAfterSave = await getOnline.PostAsync(reportData);
+                if (reportDateAfterSave != null)
                 {
                     lblpopmsg.Text = "Success";
                     //Application.Current.MainPage = new NavigationPage(new MainPage());
@@ -967,6 +989,7 @@ namespace TireProject
                 }
             }
             frmsg.IsVisible = false;
+            return reportDateAfterSave;
         }
         void NullMsg(string msg)
         {
@@ -1204,7 +1227,7 @@ namespace TireProject
             getCommand.IsEnabled = true;
         }
 
-        
+
 
         async void ShowPrint()
         {

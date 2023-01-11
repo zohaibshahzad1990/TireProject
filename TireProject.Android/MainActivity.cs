@@ -47,10 +47,10 @@ namespace TireProject.Droid
             App.ScreenHeight = (double)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             App.ScreenWidth = (double)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
             Window.SetStatusBarColor(Android.Graphics.Color.ParseColor("#e74c3c"));
-            //if (ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.WriteExternalStorage) == Permission.Denied || ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.ReadExternalStorage) == Permission.Denied)
-            //{
-            //    ActivityCompat.RequestPermissions(this, new string[] { Android.Manifest.Permission.ReadExternalStorage, Android.Manifest.Permission.WriteExternalStorage }, 1);
-            //}
+            if (ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.WriteExternalStorage) == Permission.Denied || ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.ReadExternalStorage) == Permission.Denied)
+            {
+                ActivityCompat.RequestPermissions(this, new string[] { Android.Manifest.Permission.ReadExternalStorage, Android.Manifest.Permission.WriteExternalStorage }, 1);
+            }
             LoadApplication(new App());
         }
 

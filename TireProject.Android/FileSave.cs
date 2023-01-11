@@ -43,7 +43,9 @@ namespace TireProject.Droid
         }
         public string GetPath()
         {
-            var documentsPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath,"ExcelData");
+            var state=Android.OS.Environment.ExternalStorageState;
+             var path = MainActivity.MyActivity.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments);
+            var documentsPath = Path.Combine(path.AbsolutePath,"ExcelData");
 
             if (!Directory.Exists(documentsPath))
                 Directory.CreateDirectory(documentsPath);
@@ -53,7 +55,8 @@ namespace TireProject.Droid
 
         public async Task SaveFileTxt(string data)
         {
-            Java.IO.File sdCard = Android.OS.Environment.ExternalStorageDirectory;
+            var path = MainActivity.MyActivity.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments);
+            Java.IO.File sdCard = path;
             Java.IO.File dir = new Java.IO.File(sdCard.AbsolutePath + "/Backup Tire Inc");
             dir.Mkdirs();
             Java.IO.File file = new Java.IO.File(dir, DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss") + ".txt");

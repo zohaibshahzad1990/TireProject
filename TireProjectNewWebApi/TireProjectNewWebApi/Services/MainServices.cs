@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace TireProjectNewWebApi.Services
 {
@@ -354,19 +355,41 @@ namespace TireProjectNewWebApi.Services
             var alldata = _ReportDatas.Find(ReportData => true).ToList();
             foreach (var item in alldata)
             {
-                if(item.Pic1!=null)
-                    item.Pic1 = item.Pic1.Replace("https://tireproject.", "https://tireprojectwebapi.");
-                if (item.Pic2 != null)
-                    item.Pic2 = item.Pic2.Replace("https://tireproject.", "https://tireprojectwebapi.");
-                if (item.Pic3 != null)
-                    item.Pic3 = item.Pic3.Replace("https://tireproject.", "https://tireprojectwebapi.");
-                if (item.Pic4 != null)
-                    item.Pic4 = item.Pic4.Replace("https://tireproject.", "https://tireprojectwebapi.");
-				if (item.CustomerSign != null)
-					item.CustomerSign = item.CustomerSign.Replace("https://tireproject.", "https://tireprojectwebapi.");
-				_ReportDatas.ReplaceOne(ReportData => ReportData.Id == item.Id, item);
+                try
+                {
+                    if (!string.IsNullOrEmpty(item.Pic1))
+                        item.Pic1 = changeHostName(item.Pic1);// item.Pic1.Replace("https://tireproject.", "https://tireprojectwebapi.");
+                    if (!string.IsNullOrEmpty(item.Pic2))
+                        item.Pic2 = changeHostName(item.Pic2);//item.Pic2.Replace("https://tireproject.", "https://tireprojectwebapi.");
+                    if (!string.IsNullOrEmpty(item.Pic3))
+                        item.Pic3 = changeHostName(item.Pic3);// item.Pic3.Replace("https://tireproject.", "https://tireprojectwebapi.");
+                    if (!string.IsNullOrEmpty(item.Pic4))
+                        item.Pic4 = changeHostName(item.Pic4); //item.Pic4.Replace("https://tireproject.", "https://tireprojectwebapi.");
+                    if (!string.IsNullOrEmpty(item.CustomerSign))
+                        item.CustomerSign = changeHostName(item.CustomerSign);// item.CustomerSign.Replace("https://tireproject.", "https://tireprojectwebapi.");
+                    _ReportDatas.ReplaceOne(ReportData => ReportData.Id == item.Id, item);
+                }catch(Exception ex)
+                {
+
+                }
             }
             return "string";
+        }
+
+        string changeHostName(string url)
+        {
+            try
+            {
+                var uri = new UriBuilder(url);
+                uri.Host = "209.127.116.78";
+                uri.Port = 8008;
+                uri.Scheme = "http";
+                return uri.ToString();
+            }catch(Exception ex)
+            {
+                Debug.WriteLine($" wrng:{url}");
+                return url;
+            }
         }
     }
 }

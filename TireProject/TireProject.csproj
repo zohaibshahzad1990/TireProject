@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -28,24 +28,79 @@
     <None Include="**/*" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="bin\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Library\PdfSharp.PCL\PdfSharp.PCL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Font\Bebas-Regular.otf" />
+    <None Remove="Font\Bebas-Regular.ttf" />
+    <None Remove="Font\BebasNeue-Regular.eot" />
+    <None Remove="Font\BebasNeue-Regular.otf" />
+    <None Remove="Font\BebasNeue-Regular.ttf" />
+    <None Remove="Font\BebasNeue-Regular.woff" />
+    <None Remove="Font\BebasNeue-Regular.woff2" />
+    <None Remove="Font\CaviarDreams.ttf" />
+    <None Remove="Font\CaviarDreams_Bold.ttf" />
+    <None Remove="Font\CaviarDreams_BoldItalic.ttf" />
+    <None Remove="Font\CaviarDreams_Italic.ttf" />
+    <None Remove="Font\coolvetica compressed rg.ttf" />
+    <None Remove="Font\coolvetica condensed rg.ttf" />
+    <None Remove="Font\coolvetica crammed rg.ttf" />
+    <None Remove="Font\coolvetica rg.ttf" />
+    <None Remove="Font\LemonMilk.otf" />
+    <None Remove="Font\LemonMilkbold.otf" />
+    <None Remove="Font\LemonMilkbolditalic.otf" />
+    <None Remove="Font\LemonMilkitalic.otf" />
+    <None Remove="Font\LemonMilklight.otf" />
+    <None Remove="Font\LemonMilklightitalic.otf" />
+    <None Remove="Font\Roboto-Black.ttf" />
+    <None Remove="Font\Roboto-BlackItalic.ttf" />
+    <None Remove="Font\Roboto-Bold.ttf" />
+    <None Remove="Font\Roboto-BoldCondensed.ttf" />
+    <None Remove="Font\Roboto-BoldCondensedItalic.ttf" />
+    <None Remove="Font\Roboto-BoldItalic.ttf" />
+    <None Remove="Font\Roboto-Condensed.ttf" />
+    <None Remove="Font\Roboto-CondensedItalic.ttf" />
+    <None Remove="Font\Roboto-Italic.ttf" />
+    <None Remove="Font\Roboto-Light.ttf" />
+    <None Remove="Font\Roboto-LightItalic.ttf" />
+    <None Remove="Font\Roboto-Medium.ttf" />
+    <None Remove="Font\Roboto-MediumItalic.ttf" />
+    <None Remove="Font\Roboto-Regular.ttf" />
+    <None Remove="Font\Roboto-Thin.ttf" />
+    <None Remove="Font\Roboto-ThinItalic.ttf" />
     <None Remove="logo.png" />
-    <None Remove="obj\Debug\netstandard2.0\ExportReposrtPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\PrintTirelabelPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\ExportReportPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\MainPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\App.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\Views\NewExcelPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\Views\NewPrintPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\Views\NewDetailPage.xaml.g.cs" />
-    <None Remove="obj\Debug\netstandard2.0\Views\SettingsPage.xaml.g.cs" />
+    <None Remove="TireProject.csproj" />
+    <None Remove="TireProject.csproj" />
+    <None Remove="TireProject.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Font\Roboto-Black.ttf" />
+    <EmbeddedResource Include="Font\Roboto-BlackItalic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Bold.ttf" />
+    <EmbeddedResource Include="Font\Roboto-BoldCondensed.ttf" />
+    <EmbeddedResource Include="Font\Roboto-BoldCondensedItalic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-BoldItalic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Condensed.ttf" />
+    <EmbeddedResource Include="Font\Roboto-CondensedItalic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Italic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Light.ttf" />
+    <EmbeddedResource Include="Font\Roboto-LightItalic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Medium.ttf" />
+    <EmbeddedResource Include="Font\Roboto-MediumItalic.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Regular.ttf" />
+    <EmbeddedResource Include="Font\Roboto-Thin.ttf" />
+    <EmbeddedResource Include="Font\Roboto-ThinItalic.ttf" />
     <EmbeddedResource Include="logo.png" />
   </ItemGroup>
 </Project>

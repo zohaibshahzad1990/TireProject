@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using MongoDB.Driver.GeoJsonObjectModel;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -643,7 +644,7 @@ namespace TireProject
         }
 
 
-        public async Task<bool> PostAsync(ReportData t)
+        public async Task<ReportData> PostAsync(ReportData t)
         {
             var httpClient = new HttpClient();
 
@@ -654,8 +655,9 @@ namespace TireProject
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             var result = await httpClient.PostAsync(WebServiceUrl, httpContent);
-            var res=await result.Content.ReadAsStringAsync();
-            return result.IsSuccessStatusCode;
+            var resJson = await result.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ReportData>(resJson);
+            //return result.IsSuccessStatusCode;
         }
 
         public async Task<bool> PutAsync(string id, ReportData t)
@@ -667,11 +669,21 @@ namespace TireProject
             HttpContent httpContent = new StringContent(json);
 
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var result = await httpClient.PostAsync(WebServiceUrl + id, httpContent);
+            var result = await httpClient.PostAsync(WebServiceUrl +"/"+ id, httpContent);
             return result.IsSuccessStatusCode;
 
         }
 
+        public async Task<ReportData> GetAsync(string id)
+        {
+          
+            var httpClient = new HttpClient();
+     
+            var result = await httpClient.GetStringAsync(WebServiceUrl + "/" + id);
+            return JsonConvert.DeserializeObject<ReportData>(result);
+            
+
+        }
         //INotifier
         public event PropertyChangedEventHandler PropertyChanged;
 
