@@ -788,7 +788,7 @@ namespace TireProject
             var getCommand = (Button)sender;
             getCommand.IsEnabled = false;
             var httpClient = new HttpClient();
-            var response = await httpClient.DeleteAsync("http://209.127.116.78:8008/api/mains" + reportData.Id);
+            var response = await httpClient.DeleteAsync("http://209.127.116.78:8008/api/mains/" + reportData.Id);
             if (response.IsSuccessStatusCode)
             {
                 lblpopmsg.Text = "Success";
