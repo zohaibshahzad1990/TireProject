@@ -394,7 +394,7 @@ namespace TireProject
             gfx.DrawString(reportData.CarModel, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 50 + 120) / 2, (page.Width / 2) - 30, 13), XStringFormats.TopRight);
 
             ////Four Images 
-            if (reportData.Pic1 != null && !reportData.Pic1.Contains("http://209.127.116.78:8008"))
+            if (reportData.Pic1 != null && reportData.Pic1.Contains("http://209.127.116.78:8008"))
             {
                 lblbusy.Text = "Downloading Image 1";
                 var tempPath = Path.Combine(Path.GetTempPath(), "imgdownload1.png");
@@ -406,7 +406,7 @@ namespace TireProject
                 if (File.Exists(tempPath))
                     gfx.DrawImage(XImage.FromFile(tempPath), new XRect((page.Width / 2) + 10, (page.Height - 250 + 130) / 2, page.Width / 4 - 20, ((page.Height - 290) - ((page.Height - 130) / 2)) / 2));
             }
-            if (reportData.Pic2 != null && !reportData.Pic2.Contains("http://209.127.116.78:8008"))
+            if (reportData.Pic2 != null && reportData.Pic2.Contains("http://209.127.116.78:8008"))
             {
                 lblbusy.Text = "Downloading Image 2";
                 var tempPath = Path.Combine(Path.GetTempPath(), "imgdownload2.png");
@@ -418,7 +418,7 @@ namespace TireProject
                 if (File.Exists(tempPath))
                     gfx.DrawImage(XImage.FromFile(tempPath), new XRect(page.Width - (page.Width / 4), (page.Height - 250 + 130) / 2, page.Width / 4 - 20, ((page.Height - 290) - ((page.Height - 250 + 120) / 2)) / 2));
             }
-            if (reportData.Pic3 != null && !reportData.Pic3.Contains("http://209.127.116.78:8008"))
+            if (reportData.Pic3 != null && reportData.Pic3.Contains("http://209.127.116.78:8008"))
             {
                 lblbusy.Text = "Downloading Image 3";
                 var tempPath = Path.Combine(Path.GetTempPath(), "imgdownload3.png");
@@ -430,7 +430,7 @@ namespace TireProject
                 if (File.Exists(tempPath))
                     gfx.DrawImage(XImage.FromFile(tempPath), new XRect((page.Width / 2) + 10, ((page.Height - 260) + ((page.Height - 250 + 120) / 2)) / 2, page.Width / 4 - 20, ((page.Height - 290) - ((page.Height - 250 + 120) / 2)) / 2));
             }
-            if (reportData.Pic4 != null && !reportData.Pic4.Contains("http://209.127.116.78:8008"))
+            if (reportData.Pic4 != null && reportData.Pic4.Contains("http://209.127.116.78:8008"))
             {
                 lblbusy.Text = "Downloading Image 4";
                 var tempPath = Path.Combine(Path.GetTempPath(), "imgdownload4.png");
@@ -443,7 +443,7 @@ namespace TireProject
                     gfx.DrawImage(XImage.FromFile(tempPath), new XRect(page.Width - (page.Width / 4), ((page.Height - 260) + ((page.Height - 250 + 120) / 2)) / 2, page.Width / 4 - 20, ((page.Height - 290) - ((page.Height - 250 + 120) / 2)) / 2));
             }
 
-            if (reportData.CustomerSign != null && !reportData.CustomerSign.Contains("http://209.127.116.78:8008"))
+            if (reportData.CustomerSign != null && reportData.CustomerSign.Contains("http://209.127.116.78:8008"))
             {
                 lblbusy.Text = "Downloading Sign Image";
                 var tempPath = Path.Combine(Path.GetTempPath(), "custsign.png");
