@@ -26,7 +26,7 @@ namespace TireProject
         int fieldtype=0;
         int tireseason = 0;
         string location = "ALL";
-        string ssqz = "http://209.127.116.78:8008/api/mains/customexport/02-28-2019/03-09-2019/0/NA/0/ALL/";
+        string ssqz = "http://3.133.136.76/api/mains/customexport/02-28-2019/03-09-2019/0/NA/0/ALL/";
         public ReportPage()
         {
             InitializeComponent();
@@ -41,7 +41,7 @@ namespace TireProject
             var httpClient = new HttpClient();
             try
             {
-                var request = "http://209.127.116.78:8008/api/mains/customexport/";
+                var request = "http://3.133.136.76/api/mains/customexport/";
                 // +  + "/" +  + "/" +  + "/" +  + "/" +  + "/"
 
 

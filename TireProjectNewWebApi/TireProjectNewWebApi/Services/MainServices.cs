@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using MongoDB.Bson.IO;
 
 namespace TireProjectNewWebApi.Services
 {
@@ -98,17 +99,25 @@ namespace TireProjectNewWebApi.Services
             var rf = _ReportDatas.Find(ReportData => true).ToList();
             foreach (var item in rf)
             {
-                if(item.Pic1!=null)
-                    item.Pic1 = item.Pic1.Replace("https://tireprojectwebapi.azurewebsites.net", "https://test1.innovativebuddy.com");
-                if (item.Pic2 != null)
-                    item.Pic2 = item.Pic2.Replace("https://tireprojectwebapi.azurewebsites.net", "https://test1.innovativebuddy.com");
-                if (item.Pic3 != null)
-                    item.Pic3 = item.Pic3.Replace("https://tireprojectwebapi.azurewebsites.net", "https://test1.innovativebuddy.com");
-                if (item.Pic4 != null)
-                    item.Pic4 = item.Pic4.Replace("https://tireprojectwebapi.azurewebsites.net", "https://test1.innovativebuddy.com");
-                if (item.CustomerSign != null)
-                    item.CustomerSign = item.CustomerSign.Replace("https://tireprojectwebapi.azurewebsites.net", "https://test1.innovativebuddy.com");
-                Update(item.Id, item);
+                if (item.Pic1?.Contains("3.133.136.76")==false || item.Pic2?.Contains("3.133.136.76") == false || item.Pic3?.Contains("3.133.136.76") == false || item.Pic4?.Contains("3.133.136.76") == false || item.CustomerSign?.Contains("3.133.136.76") == false)
+                {
+                    Debug.WriteLine($"FOUND--------------------------------------------------------------- {Newtonsoft.Json.JsonConvert.SerializeObject(item)}");
+                    if (item.Pic1 != null)
+                        item.Pic1 = item.Pic1.ReplaceDomain();
+                    if (item.Pic2 != null)
+                        item.Pic2 = item.Pic2.ReplaceDomain();
+                    if (item.Pic3 != null)
+                        item.Pic3 = item.Pic3.ReplaceDomain();
+                    if (item.Pic4 != null)
+                        item.Pic4 = item.Pic4.ReplaceDomain();
+                    if (item.CustomerSign != null)
+                        item.CustomerSign = item.CustomerSign.ReplaceDomain();
+                    Update(item.Id, item);
+                }
+                else
+                {
+                    //Debug.WriteLine("Not found");
+                }
             }
             return "success";
         }
