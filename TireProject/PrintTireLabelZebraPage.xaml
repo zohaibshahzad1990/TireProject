@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Tire Label"
+    x:Class="TireProject.PrintTireLabelZebraPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Preview and Content Area -->
+            <ScrollView Grid.Row="0">
+                <StackLayout Padding="20" Spacing="15">
+                    <Frame BorderColor="LightGray" Padding="0" HasShadow="True" CornerRadius="6">
+                        <Image x:Name="previewImageView" Aspect="AspectFit" HeightRequest="400"/>
+                    </Frame>
+
+                    <Label Text="Preview shows how the label will print on your Zebra ZP450 printer" 
+                           HorizontalTextAlignment="Center" 
+                           TextColor="Gray" 
+                           FontSize="Small"/>
+
+                    <!-- Additional label details if needed -->
+                    <Frame BorderColor="LightGray" Padding="15" HasShadow="True" CornerRadius="6"
+                           IsVisible="False" x:Name="detailsFrame">
+                        <StackLayout Spacing="10">
+                            <Label Text="Label Details" FontAttributes="Bold" FontSize="Medium"/>
+                            <Label x:Name="labelInfoText" LineBreakMode="WordWrap"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+
+            <!-- Print Button at the bottom -->
+            <Button Grid.Row="1"
+                    x:Name="printbtn" 
+                    Clicked="EvePrint" 
+                    IsEnabled="False" 
+                    BackgroundColor="#2196F3" 
+                    Text="Print Label" 
+                    TextColor="White" 
+                    Margin="20,10,20,10"
+                    HeightRequest="50"
+                    CornerRadius="8"/>
+
+            <!-- Loading Overlay -->
+            <Grid x:Name="stkmain" 
+                  BackgroundColor="#80000000" 
+                  IsVisible="False"
+                  Grid.RowSpan="2">
+                <StackLayout HorizontalOptions="Center" 
+                             VerticalOptions="Center" 
+                             Spacing="15">
+                    <ActivityIndicator x:Name="busy" 
+                                      Color="White" 
+                                      HeightRequest="50"
+                                      WidthRequest="50"/>
+                    <Label x:Name="lblbusy" 
+                          Text="Loading..." 
+                          TextColor="White" 
+                          FontSize="Medium"
+                          HorizontalTextAlignment="Center"/>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

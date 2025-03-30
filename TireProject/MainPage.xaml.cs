@@ -348,7 +348,7 @@ namespace TireProject
             var getCommand = (Button)sender;
             getCommand.IsEnabled = false;
             //await Navigation.PushAsync(new PrintTirelabelPage(report));
-            await Navigation.PushAsync(new PrintTirelabelPageA6(report));
+            await Navigation.PushAsync(new PrintTireLabelZebraPage(report));
             //var action= await DisplayActionSheet((("Select Page Size", "A4", "A6");
             HidePrint();
             getCommand.IsEnabled = true;

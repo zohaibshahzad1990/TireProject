@@ -165,7 +165,7 @@
                 <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
                 <Button Clicked="EvePrintA4" Text="Print A4" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
                 <BoxView BackgroundColor="{x:StaticResource AppColor}" HeightRequest="1"/>
-                <Button Clicked="EvePrintA6" Text="Print A6" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
+                <Button Clicked="EvePrintA6" Text="Print Label" FontAttributes="Bold" TextColor="{x:StaticResource AppColor}" BackgroundColor="White"/>
                 </StackLayout>
             </Frame>
             </StackLayout>

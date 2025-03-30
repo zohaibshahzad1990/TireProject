@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.4" />
-    <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
+    <PackageReference Include="ZXing.Net.Mobile" Version="3.1.0-beta2" />
     <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Xamarin.Forms.InputKit" Version="4.1.6" />
@@ -34,6 +34,9 @@
     <EmbeddedResource Remove="obj\**" />
     <None Remove="bin\**" />
     <None Remove="obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="PrintTirelabelPageA6 - Copy.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\PdfSharp.PCL\PdfSharp.PCL.csproj" />
@@ -102,5 +105,11 @@
     <EmbeddedResource Include="Font\Roboto-Thin.ttf" />
     <EmbeddedResource Include="Font\Roboto-ThinItalic.ttf" />
     <EmbeddedResource Include="logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="PrintTireLabelZebraPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

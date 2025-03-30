@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using FFImageLoading.Forms.Platform;
 using Android.Support.V4.Content;
 using Android.Support.V4.App;
+using ZXing.Mobile;
 
 namespace TireProject.Droid
 {
@@ -36,10 +37,11 @@ namespace TireProject.Droid
 
             base.OnCreate(savedInstanceState);
             Forms.SetFlags("CollectionView_Experimental");
+         
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
+           
             MyActivity = this;
 			CachedImageRenderer.Init(true);
 			//Android.Glide.Forms.Init();
@@ -51,12 +53,27 @@ namespace TireProject.Droid
             {
                 ActivityCompat.RequestPermissions(this, new string[] { Android.Manifest.Permission.ReadExternalStorage, Android.Manifest.Permission.WriteExternalStorage }, 1);
             }
+
+            // Request camera permission as well
+            if (ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.WriteExternalStorage) == Permission.Denied ||
+                ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.ReadExternalStorage) == Permission.Denied ||
+                ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.Camera) == Permission.Denied)
+            {
+                ActivityCompat.RequestPermissions(this, new string[] {
+                    Android.Manifest.Permission.ReadExternalStorage,
+                    Android.Manifest.Permission.WriteExternalStorage,
+                    Android.Manifest.Permission.Camera
+                }, 1);
+            }
+
             LoadApplication(new App());
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
