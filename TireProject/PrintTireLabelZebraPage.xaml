@@ -9,20 +9,18 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-
             <!-- Preview and Content Area -->
             <ScrollView Grid.Row="0">
                 <StackLayout Padding="20" Spacing="15">
                     <Frame BorderColor="LightGray" Padding="0" HasShadow="True" CornerRadius="6">
                         <Image x:Name="previewImageView" Aspect="AspectFit" HeightRequest="400"/>
                     </Frame>
-
                     <Label Text="Preview shows how the label will print on your Zebra ZP450 printer" 
                            HorizontalTextAlignment="Center" 
                            TextColor="Gray" 
                            FontSize="Small"/>
-
                     <!-- Additional label details if needed -->
                     <Frame BorderColor="LightGray" Padding="15" HasShadow="True" CornerRadius="6"
                            IsVisible="False" x:Name="detailsFrame">
@@ -34,15 +32,38 @@
                 </StackLayout>
             </ScrollView>
 
+            <!-- Number of copies selector -->
+            <Grid Grid.Row="1" Margin="20,0,20,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Frame Grid.Column="0" BorderColor="LightGray" Padding="10" HasShadow="True" CornerRadius="6">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Number of Copies:" 
+                               VerticalOptions="Center"
+                               FontSize="Medium"/>
+                        <Entry x:Name="copiesEntry" 
+                               Keyboard="Numeric"
+                               HorizontalOptions="FillAndExpand"
+                               TextChanged="OnCopiesEntryTextChanged"
+                               PlaceholderColor="Gray"
+                               Placeholder="Enter number of copies" 
+                               Text="4"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
             <!-- Print Button at the bottom -->
-            <Button Grid.Row="1"
+            <Button Grid.Row="2"
                     x:Name="printbtn" 
                     Clicked="EvePrint" 
                     IsEnabled="False" 
                     BackgroundColor="#2196F3" 
                     Text="Print Label" 
                     TextColor="White" 
-                    Margin="20,10,20,10"
+                    Margin="20,0,20,20"
                     HeightRequest="50"
                     CornerRadius="8"/>
 
@@ -50,7 +71,7 @@
             <Grid x:Name="stkmain" 
                   BackgroundColor="#80000000" 
                   IsVisible="False"
-                  Grid.RowSpan="2">
+                  Grid.RowSpan="3">
                 <StackLayout HorizontalOptions="Center" 
                              VerticalOptions="Center" 
                              Spacing="15">

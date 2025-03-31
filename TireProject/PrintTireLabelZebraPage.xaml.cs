@@ -8,38 +8,53 @@ using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using Xamarin.Forms;
+using System.Net.Sockets;
 
 namespace TireProject
 {
     public partial class PrintTireLabelZebraPage : ContentPage
     {
         ReportData data = new ReportData();
+        private int numberOfCopies = 4; // Default number of copies to print
 
         public PrintTireLabelZebraPage()
         {
             InitializeComponent();
             stkmain.IsVisible = false;
             printbtn.IsEnabled = true;
+            copiesEntry.Text = numberOfCopies.ToString();
         }
 
         public PrintTireLabelZebraPage(ReportData reportData)
         {
             InitializeComponent();
             data = reportData;
-            PageRun(reportData);
+
+            // Make sure the overlay is not visible initially
+            stkmain.IsVisible = false;
+
+            // Set copies text field
+            copiesEntry.Text = numberOfCopies.ToString();
+
+            // Run page initialization without showing the overlay initially
+            Device.BeginInvokeOnMainThread(async () => {
+                await PageRun(reportData);
+            });
         }
 
         async Task PageRun(ReportData reportData)
         {
-            lblbusy.Text = "Loading Info From Server...";
-            await Task.Delay(1000);
-            busy.IsVisible = true;
-            busy.IsRunning = true;
-            lblbusy.IsVisible = true;
-            stkmain.IsVisible = true;
-
             try
             {
+                // Show overlay with loading message
+                lblbusy.Text = "Loading Info From Server...";
+                busy.IsVisible = true;
+                busy.IsRunning = true;
+                lblbusy.IsVisible = true;
+                stkmain.IsVisible = true;
+
+                await Task.Delay(1000);
+
                 // Generate ZPL code for the Zebra printer
                 string zplCommand = GenerateZPLCode(reportData);
 
@@ -64,10 +79,11 @@ namespace TireProject
             }
             finally
             {
+                // Hide the overlay when done
                 busy.IsVisible = false;
                 busy.IsRunning = false;
                 lblbusy.IsVisible = false;
-                stkmain.IsVisible = true;
+                stkmain.IsVisible = false;
                 printbtn.IsEnabled = true;
             }
         }
@@ -189,8 +205,7 @@ namespace TireProject
                         var imageStream = await response.Content.ReadAsStreamAsync();
                         // Now reset the original stream for barcode scanning
                         imageStream.Position = 0;
-                        
-                       
+
                         return ImageSource.FromStream(() => imageStream);
                     }
                     else
@@ -214,10 +229,139 @@ namespace TireProject
 
         async void EvePrint(object sender, EventArgs e)
         {
-           
+            // Validate number of copies
+            if (!int.TryParse(copiesEntry.Text, out numberOfCopies) || numberOfCopies <= 0)
+            {
+                await DisplayAlert("Invalid Input", "Please enter a valid number of copies", "OK");
+                copiesEntry.Text = "4"; // Reset to default
+                numberOfCopies = 4;
+                return;
+            }
+
+            try
+            {
+                lblbusy.Text = "Sending to printer...";
+                busy.IsVisible = true;
+                busy.IsRunning = true;
+                lblbusy.IsVisible = true;
+                stkmain.IsVisible = true;
+                printbtn.IsEnabled = false;
+
+                await Task.Run(async () => {
+                    try
+                    {
+                        // Generate ZPL code
+                        string zplCommand = GenerateZPLCode(data);
+
+                        // Get printer settings (these might be stored in app settings)
+                        string printerIp = "192.168.1.101"; // Default IP - this should be configurable in settings
+                        int printerPort = 9100; // Default ZPL port
+                        string savedPrinterIp = null;
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+                            // Ask for printer IP if not configured
+                             savedPrinterIp = await GetPrinterIpAsync();
+                        });
+                        if (!string.IsNullOrEmpty(savedPrinterIp))
+                        {
+                            printerIp = savedPrinterIp;
+                        }
+
+                        // Print multiple copies based on user input
+                        for (int i = 0; i < numberOfCopies; i++)
+                        {
+                            using (TcpClient client = new TcpClient())
+                            {
+                                await client.ConnectAsync(printerIp, printerPort);
+                                using (NetworkStream stream = client.GetStream())
+                                {
+                                    // Convert ZPL command to bytes and send to printer
+                                    byte[] zplBytes = Encoding.UTF8.GetBytes(zplCommand);
+                                    await stream.WriteAsync(zplBytes, 0, zplBytes.Length);
+                                    await stream.FlushAsync();
+                                    // Add small delay between prints
+                                    await Task.Delay(500);
+                                }
+                            }
+
+                            // Update progress on UI thread
+                            Device.BeginInvokeOnMainThread(() => {
+                                lblbusy.Text = $"Printing label {i + 1} of {numberOfCopies}...";
+                            });
+                        }
+
+                        // Success
+                        Device.BeginInvokeOnMainThread(async () => {
+                            await DisplayAlert("Success", $"Successfully sent {numberOfCopies} label(s) to the printer", "OK");
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle error on UI thread
+                        Device.BeginInvokeOnMainThread(async () => {
+                            await DisplayAlert("Print Error", $"Failed to print: {ex.Message}", "OK");
+                        });
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to print: {ex.Message}", "OK");
+            }
+            finally
+            {
+                // Reset UI
+                busy.IsVisible = false;
+                busy.IsRunning = false;
+                lblbusy.IsVisible = false;
+                stkmain.IsVisible = false;
+                printbtn.IsEnabled = true;
+            }
+        }
+
+        private async Task<string> GetPrinterIpAsync()
+        {
+            // This should check app settings for saved printer IP
+            // If not found, you could prompt the user
+
+            // Example implementation - replace with your actual settings implementation
+            string savedIp = Application.Current.Properties.ContainsKey("ZebraPrinterIP")
+                ? Application.Current.Properties["ZebraPrinterIP"].ToString()
+                : "";
+
+            if (string.IsNullOrEmpty(savedIp))
+            {
+
+                // Only prompt if we don't have a saved IP
+                string result = await DisplayPromptAsync(
+                    "Printer Setup",
+                    "Enter Zebra Printer IP Address:",
+                    initialValue: "192.168.1.101");
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    // Save for future use
+                    Application.Current.Properties["ZebraPrinterIP"] = result;
+                    await Application.Current.SavePropertiesAsync();
+                    return result;
+                }
+                return "192.168.1.101"; // Default if user cancels
+            }
+
+            return savedIp;
+        }
+
+        private void OnCopiesEntryTextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Validate that only numbers are entered
+            if (!string.IsNullOrEmpty(e.NewTextValue))
+            {
+                bool isValid = int.TryParse(e.NewTextValue, out int value);
+                if (!isValid)
+                {
+                    ((Entry)sender).Text = e.OldTextValue;
+                }
+            }
         }
     }
-
-
-    
 }
