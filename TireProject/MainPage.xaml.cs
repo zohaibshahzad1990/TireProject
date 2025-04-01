@@ -33,7 +33,7 @@ namespace TireProject
         public MainPage()
         {
             InitializeComponent();
-
+            resetBtn.IsVisible = false;
             menubox.TranslationX = -App.ScreenWidth;
             RefList(selectedstate);
             listmain.Scrolled += async (sender, e) =>
@@ -572,6 +572,104 @@ namespace TireProject
             printtype.IsVisible = false;
         }
 
+        private async void scanBtn_Clicked(object sender, EventArgs e)
+        {
+            var scanButton = (ImageButton)sender;
+            scanButton.IsEnabled = false;
+
+            try
+            {
+                busy.IsVisible = true;
+                busy.IsRunning = true;
+
+                // Check for storage permission which might be needed for camera
+                if (DependencyService.Get<ICloseApplication>().storagepermission())
+                {
+                    // Call QR code scanner
+                    var scanResult = await DependencyService.Get<IScanner>().Scan();
+
+                    // If scan was successful and returned a value
+                    if (!string.IsNullOrEmpty(scanResult))
+                    {
+                        string searchText = scanResult;
+
+                        // Check if it contains a separator (in case the QR has a format like "Type|Value")
+                        if (scanResult.Contains("|") && scanResult.Split('|').Length > 1)
+                        {
+                            searchText = scanResult.Split('|')[1];
+                        }
+
+                        // Set the search text to the scan result
+                        ensearch.Text = searchText;
+
+                        // Perform search with the scanned text
+                        if (searchText.Length >= 3)
+                        {
+                            blogpost.Clear();
+                            totallistcount = 0;
+                            getlistcount = 0;
+
+                            await RefSearchList(searchText, selectedstate);
+                        }
+                        else
+                        {
+                            await DisplayAlert("Search", "Scanned text too short. Minimum 3 characters required.", "OK");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Error scanning QR code: {ex.Message}", "OK");
+            }
+            finally
+            {
+                busy.IsVisible = false;
+                busy.IsRunning = false;
+                scanButton.IsEnabled = true;
+            }
+        }
+
+        private async void resetBtn_Clicked(object sender, EventArgs e)
+        {
+            var resetButton = (ImageButton)sender;
+            resetButton.IsEnabled = false;
+
+            try
+            {
+                busy.IsVisible = true;
+                busy.IsRunning = true;
+
+                // Clear the search text
+                ensearch.Text = string.Empty;
+
+                // Reset to default state and load all records
+                blogpost.Clear();
+                totallistcount = 0;
+                getlistcount = 0;
+                start = 0;
+                end = 20;
+                reachedend = false;
+
+                // Refresh the list with the current selected state/sort order
+                await RefList(selectedstate);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Error resetting search: {ex.Message}", "OK");
+            }
+            finally
+            {
+                busy.IsVisible = false;
+                busy.IsRunning = false;
+                resetButton.IsEnabled = true;
+            }
+        }
+     
+        private void ensearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            resetBtn.IsVisible = !string.IsNullOrEmpty(ensearch.Text);
+        }
     }
 
     public class GetOnlineData
@@ -691,6 +789,8 @@ namespace TireProject
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+      
     }
 
 

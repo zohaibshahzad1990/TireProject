@@ -20,7 +20,9 @@
                 </Grid>
                 <StackLayout BackgroundColor="White">
                     <StackLayout Spacing="0" BackgroundColor="White" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-                        <Entry Margin="5,0,0,0" VerticalOptions="CenterAndExpand" x:Name="ensearch" FontSize="Medium" Completed="Handle_Completed" HorizontalOptions="FillAndExpand" Text="" Placeholder="What Are You Searching For?" PlaceholderColor="#e74c3c" TextColor="#e74c3c"/>
+                        <Entry Margin="5,0,0,0" VerticalOptions="CenterAndExpand" x:Name="ensearch" TextChanged="ensearch_TextChanged" FontSize="Medium" Completed="Handle_Completed" HorizontalOptions="FillAndExpand" Text="" Placeholder="What Are You Searching For?" PlaceholderColor="#e74c3c" TextColor="#e74c3c"/>
+                        <ImageButton  BackgroundColor="White" x:Name="resetBtn" VerticalOptions="CenterAndExpand" Clicked="resetBtn_Clicked"  Padding="15" Source="icoreset" HeightRequest="50"/>
+                        <ImageButton  BackgroundColor="White"  x:Name="scanBtn" VerticalOptions="CenterAndExpand" Clicked="scanBtn_Clicked"  Padding="15" Source="icoscan" HeightRequest="50"/>
                         <ImageButton BackgroundColor="White" x:Name="searchBtn" VerticalOptions="CenterAndExpand" Clicked="EveSearch" Padding="15" Source="icosearch" HeightRequest="50"/>
                     </StackLayout>
 
