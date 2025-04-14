@@ -7,7 +7,8 @@ namespace TireProject
 	public interface IScanner
 	{
 		Task<string> Scan();
-        byte[] GenerateBarcode(string content, ZXing.BarcodeFormat bb);
+        byte[] GenerateBarcode(string content, ZXing.BarcodeFormat format);
+        
     }
 }
 

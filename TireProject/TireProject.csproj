@@ -107,7 +107,7 @@
     <EmbeddedResource Include="logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="PrintTireLabelZebraPage.xaml">
+    <EmbeddedResource Update="PrintTireLabelPdfPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

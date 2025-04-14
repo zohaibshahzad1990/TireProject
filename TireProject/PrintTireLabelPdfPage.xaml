@@ -2,8 +2,8 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Tire Label"
-    x:Class="TireProject.PrintTireLabelZebraPage">
+    Title="Tire Label PDF"
+    x:Class="TireProject.PrintTireLabelPdfPage">
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -17,7 +17,7 @@
                     <Frame BorderColor="LightGray" Padding="0" HasShadow="True" CornerRadius="6">
                         <Image x:Name="previewImageView" Aspect="AspectFit" HeightRequest="400"/>
                     </Frame>
-                    <Label Text="Preview shows how the label will print on your Zebra ZP450 printer" 
+                    <Label Text="Preview shows how the labels will look (4x6 inch size)" 
                            HorizontalTextAlignment="Center" 
                            TextColor="Gray" 
                            FontSize="Small"/>
@@ -41,7 +41,7 @@
 
                 <Frame Grid.Column="0" BorderColor="LightGray" Padding="10" HasShadow="True" CornerRadius="6">
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Number of Copies:" 
+                        <Label Text="Number of Labels:" 
                                VerticalOptions="Center"
                                FontSize="Medium"/>
                         <Entry x:Name="copiesEntry" 
@@ -49,19 +49,19 @@
                                HorizontalOptions="FillAndExpand"
                                TextChanged="OnCopiesEntryTextChanged"
                                PlaceholderColor="Gray"
-                               Placeholder="Enter number of copies" 
+                               Placeholder="Enter number of labels" 
                                Text="4"/>
                     </StackLayout>
                 </Frame>
             </Grid>
 
-            <!-- Print Button at the bottom -->
+            <!-- Export Button at the bottom -->
             <Button Grid.Row="2"
                     x:Name="printbtn" 
                     Clicked="EvePrint" 
                     IsEnabled="False" 
                     BackgroundColor="#2196F3" 
-                    Text="Print Label" 
+                    Text="Generate PDF" 
                     TextColor="White" 
                     Margin="20,0,20,20"
                     HeightRequest="50"
