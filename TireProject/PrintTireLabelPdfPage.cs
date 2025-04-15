@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Xamarin.Forms;
-using Xamarin.Essentials;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+using Entry = Xamarin.Forms.Entry;
 
 namespace TireProject
 {
@@ -13,6 +14,7 @@ namespace TireProject
     {
         ReportData data = new ReportData();
         private int numberOfCopies = 4; // Default number of copies to print
+        private string pdfFilePath; // Store the generated PDF path
 
         public PrintTireLabelPdfPage()
         {
@@ -52,19 +54,21 @@ namespace TireProject
 
                 await Task.Delay(1000);
 
-                // Generate PDF for preview
+                // Generate PDF
                 byte[] pdfBytes = await GeneratePdfAsync(reportData, 1);
 
-                // Convert the first page to an image for preview
-                var previewImage = await ConvertPdfPageToImageSource(pdfBytes, 0);
+                // Save PDF to temporary file for preview
+                var systemHelper = DependencyService.Get<ISystemHelper>();
+                pdfFilePath = Path.Combine(systemHelper.GetTemporaryDirectory(), $"TireLabels_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+                File.WriteAllBytes(pdfFilePath, pdfBytes);
 
-                if (previewImage != null)
-                {
-                    previewImageView.Source = previewImage;
-                    previewImageView.IsVisible = true;
-                }
+                // Create PDF viewer and add it to the layout
+                var pdfView = new PdfView() { VerticalOptions = LayoutOptions.FillAndExpand };
+                previewContainer.Children.Clear(); // Clear any existing content
+                previewContainer.Children.Add(pdfView);
+                pdfView.Uri = pdfFilePath;
 
-                lblbusy.Text = "Ready to Export PDF!";
+                lblbusy.Text = "Ready to Print!";
             }
             catch (Exception ex)
             {
@@ -121,11 +125,11 @@ namespace TireProject
             var systemHelper = DependencyService.Get<ISystemHelper>();
             var fontName = systemHelper.GetDefaultSystemFont();
 
-            // Fonts for different sections - slightly smaller than before
+            // Fonts for different sections
             XFont headerFont = new XFont(fontName, 18, XFontStyle.Bold);
             XFont subheaderFont = new XFont(fontName, 14);
-            XFont plateFont = new XFont(fontName, 42, XFontStyle.Bold); // Reduced from 48
-            XFont carInfoFont = new XFont(fontName, 18, XFontStyle.Bold); // Reduced from 20
+            XFont plateFont = new XFont(fontName, 42, XFontStyle.Bold);
+            XFont carInfoFont = new XFont(fontName, 18, XFontStyle.Bold);
             XFont normalFont = new XFont(fontName, 11);
             XFont smallFont = new XFont(fontName, 8);
 
@@ -193,65 +197,65 @@ namespace TireProject
             XSize plateSize = gfx.MeasureString(plateNo, plateFont);
             gfx.DrawString(plateNo, plateFont, XBrushes.Black,
                 xStart + (usableWidth - plateSize.Width) / 2, currentY + plateSize.Height);
-            currentY += plateSize.Height + 5; // Reduced spacing after plate number
+            currentY += plateSize.Height + 5;
 
             // Horizontal line
             gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
-            currentY += 5; // Reduced spacing
+            currentY += 5;
 
             // Car info section
             XSize carInfoSize = gfx.MeasureString(carInfo, carInfoFont);
             gfx.DrawString(carInfo, carInfoFont, XBrushes.Black,
                 xStart + (usableWidth - carInfoSize.Width) / 2, currentY + carInfoSize.Height);
-            currentY += carInfoSize.Height + 5; // Reduced spacing
+            currentY += carInfoSize.Height + 5;
 
             // Horizontal line
             gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
-            currentY += 5; // Reduced spacing
+            currentY += 5;
 
             // Make/model centered
             XSize makeModelSize = gfx.MeasureString(makeModel, normalFont);
             gfx.DrawString(makeModel, normalFont, XBrushes.Black,
                 xStart + (usableWidth - makeModelSize.Width) / 2, currentY + makeModelSize.Height);
-            currentY += makeModelSize.Height + 5; // Reduced spacing
+            currentY += makeModelSize.Height + 5;
 
             // Tire info in three columns
             double columnWidth = usableWidth / 3;
             gfx.DrawString(tireSize, normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
             gfx.DrawString(tireQty, normalFont, XBrushes.Black, xStart + columnWidth, currentY + normalFont.Height);
             gfx.DrawString(seasonText, normalFont, XBrushes.Black, xStart + 2 * columnWidth, currentY + normalFont.Height);
-            currentY += normalFont.Height + 5; // Reduced spacing
+            currentY += normalFont.Height + 5;
 
             // Customer name centered
             XSize customerNameSize = gfx.MeasureString(customerName, normalFont);
             gfx.DrawString(customerName, normalFont, XBrushes.Black,
                 xStart + (usableWidth - customerNameSize.Width) / 2, currentY + customerNameSize.Height);
-            currentY += customerNameSize.Height + 5; // Reduced spacing
+            currentY += customerNameSize.Height + 5;
 
             // Horizontal line
             gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
-            currentY += 5; // Reduced spacing
+            currentY += 5;
 
-            // Date and REP info in two columns - with more compact spacing
+            // Date and REP info in two columns
             gfx.DrawString(reportData.REP, normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
             gfx.DrawString(dateTimeStr, normalFont, XBrushes.Black, xStart + usableWidth / 2, currentY + normalFont.Height);
-            currentY += normalFont.Height + 5; // Reduced spacing
+            currentY += normalFont.Height + 5;
 
             // Location indicators - more compact with horizontal layout
             gfx.DrawString("L", normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
             gfx.DrawString("O", normalFont, XBrushes.Black, xStart + 30, currentY + normalFont.Height);
             gfx.DrawString("C", normalFont, XBrushes.Black, xStart + 60, currentY + normalFont.Height);
-            currentY += normalFont.Height + 5; // Reduced spacing
+            currentY += normalFont.Height + 5;
 
             // Calculate remaining space
             double remainingSpace = height - currentY - margin;
-            double qrCodeSize = 130; // Slightly smaller than before
+            double qrCodeSize = 130;
 
             // Check if we have enough space for the QR code
-            if (remainingSpace < qrCodeSize + 25) // QR code + text below
+            if (remainingSpace < qrCodeSize + 25)
             {
                 // Not enough space, reduce QR code size
-                qrCodeSize = Math.Max(100, remainingSpace - 25); // Minimum of 100 points
+                qrCodeSize = Math.Max(100, remainingSpace - 25);
             }
 
             // Generate and add QR code
@@ -276,7 +280,7 @@ namespace TireProject
 
                             // Draw QR code
                             gfx.DrawImage(xImage, qrX, currentY, qrCodeSize, qrCodeSize);
-                            currentY += qrCodeSize + 5; // Reduced spacing after QR code
+                            currentY += qrCodeSize + 5;
                         }
 
                         // Check if we have room for the text
@@ -403,14 +407,6 @@ namespace TireProject
             gfx.DrawRectangle(XBrushes.Black, x + centerOffset, y + centerOffset, centerSize, centerSize);
         }
 
-        private async Task<ImageSource> ConvertPdfPageToImageSource(byte[] pdfBytes, int pageIndex)
-        {
-            // This is a placeholder for converting PDF page to an image
-            // For now, just return the same PDF bytes as a stream
-            var stream = new MemoryStream(pdfBytes);
-            return ImageSource.FromStream(() => new MemoryStream(pdfBytes));
-        }
-
         async void EvePrint(object sender, EventArgs e)
         {
             // Validate number of copies
@@ -431,18 +427,23 @@ namespace TireProject
                 stkmain.IsVisible = true;
                 printbtn.IsEnabled = false;
 
-                // Generate PDF
+                // Generate PDF with the requested number of copies
                 byte[] pdfBytes = await GeneratePdfAsync(data, numberOfCopies);
 
-                // Save PDF
-                await SavePdfAsync(pdfBytes);
+                // Save to temporary file for printing
+                var systemHelper = DependencyService.Get<ISystemHelper>();
+                string filePath = Path.Combine(systemHelper.GetTemporaryDirectory(), $"TireLabels_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+                File.WriteAllBytes(filePath, pdfBytes);
+
+                // Send to printer
+                DependencyService.Get<IPrint>().printpdf(filePath);
 
                 // Success
-                await DisplayAlert("Success", "PDF generated successfully!", "OK");
+                await DisplayAlert("Success", "PDF sent to printer", "OK");
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"Failed to generate PDF: {ex.Message}", "OK");
+                await DisplayAlert("Error", $"Failed to print PDF: {ex.Message}", "OK");
             }
             finally
             {
@@ -453,22 +454,6 @@ namespace TireProject
                 stkmain.IsVisible = false;
                 printbtn.IsEnabled = true;
             }
-        }
-
-        private async Task SavePdfAsync(byte[] pdfBytes)
-        {
-            // Implement file saving logic based on your platform
-            string fileName = $"TireLabels_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-            string filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
-
-            File.WriteAllBytes(filePath, pdfBytes);
-
-            // Share the file
-            await Share.RequestAsync(new ShareFileRequest
-            {
-                Title = "Share Tire Labels PDF",
-                File = new ShareFile(filePath)
-            });
         }
 
         private void OnCopiesEntryTextChanged(object sender, TextChangedEventArgs e)

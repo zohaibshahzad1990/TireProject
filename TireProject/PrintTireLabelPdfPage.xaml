@@ -12,25 +12,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <!-- Preview and Content Area -->
-            <ScrollView Grid.Row="0">
-                <StackLayout Padding="20" Spacing="15">
-                    <Frame BorderColor="LightGray" Padding="0" HasShadow="True" CornerRadius="6">
-                        <Image x:Name="previewImageView" Aspect="AspectFit" HeightRequest="400"/>
-                    </Frame>
-                    <Label Text="Preview shows how the labels will look (4x6 inch size)" 
-                           HorizontalTextAlignment="Center" 
-                           TextColor="Gray" 
-                           FontSize="Small"/>
-                    <!-- Additional label details if needed -->
-                    <Frame BorderColor="LightGray" Padding="15" HasShadow="True" CornerRadius="6"
-                           IsVisible="False" x:Name="detailsFrame">
-                        <StackLayout Spacing="10">
-                            <Label Text="Label Details" FontAttributes="Bold" FontSize="Medium"/>
-                            <Label x:Name="labelInfoText" LineBreakMode="WordWrap"/>
-                        </StackLayout>
-                    </Frame>
-                </StackLayout>
-            </ScrollView>
+            <StackLayout x:Name="previewContainer" Grid.Row="0" VerticalOptions="FillAndExpand">
+                <!-- PdfView will be added here programmatically -->
+            </StackLayout>
 
             <!-- Number of copies selector -->
             <Grid Grid.Row="1" Margin="20,0,20,10">
@@ -55,13 +39,13 @@
                 </Frame>
             </Grid>
 
-            <!-- Export Button at the bottom -->
+            <!-- Print Button at the bottom -->
             <Button Grid.Row="2"
                     x:Name="printbtn" 
                     Clicked="EvePrint" 
                     IsEnabled="False" 
                     BackgroundColor="#2196F3" 
-                    Text="Generate PDF" 
+                    Text="Print Labels" 
                     TextColor="White" 
                     Margin="20,0,20,20"
                     HeightRequest="50"
