@@ -36,6 +36,7 @@
     <None Remove="obj\**" />
   </ItemGroup>
   <ItemGroup>
+    
     <Compile Remove="PrintTirelabelPageA6 - Copy.xaml.cs" />
   </ItemGroup>
   <ItemGroup>

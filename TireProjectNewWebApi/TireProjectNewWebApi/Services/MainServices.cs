@@ -17,16 +17,38 @@ namespace TireProjectNewWebApi.Services
     public class MainService
     {
         private readonly IMongoCollection<ReportData> _ReportDatas;
+        private readonly IMongoCollection<Settings> _Settings;
         public MainService(IConfiguration config)
         {
             var client = new MongoClient(config.GetConnectionString("MainString"));
             var database = client.GetDatabase("TireDatabase");
             _ReportDatas = database.GetCollection<ReportData>("TireCollection");
+            _Settings = database.GetCollection<Settings>("Settings");
             //var database = client.GetDatabase("TireAppMediaDatabase");
             //_ReportDatas = database.GetCollection<ReportData>("TireAppMediaCollection");
 
         }
 
+        public async Task<Settings> GetSettings()
+        {
+            var settings = await _Settings.Find(_ => true).FirstOrDefaultAsync();
+            return settings;
+        }
+
+        public async Task SaveSettings(Settings settings)
+        {
+            var existingSettings = await _Settings.Find(_ => true).FirstOrDefaultAsync();
+
+            if (existingSettings == null)
+            {
+                await _Settings.InsertOneAsync(settings);
+            }
+            else
+            {
+                settings.Id = existingSettings.Id;
+                await _Settings.ReplaceOneAsync(s => s.Id == existingSettings.Id, settings);
+            }
+        }
         public async Task BackupFunction(string hostpath)
         {
             var startTimeSpan = TimeSpan.Zero;

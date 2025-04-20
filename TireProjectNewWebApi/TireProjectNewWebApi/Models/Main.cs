@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace TireProjectNewWebApi.Models
 {
@@ -139,5 +140,18 @@ namespace TireProjectNewWebApi.Models
         public int ii { get; set; }
         public int eTireSeason { get; set; }
         public string warehouse { get; set; }
+    }
+
+
+    public class Settings
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        public string CompanyCode { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyAddress { get; set; }
+        public string TermsAndConditions { get; set; }
+        public List<string> WareHouse { get; set; } = new List<string>();
     }
 }

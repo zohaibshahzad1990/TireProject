@@ -676,7 +676,7 @@ namespace TireProject
     {
         private List<ReportData> _datalist;
         public bool _isbusy = false;
-        public string WebServiceUrl = "http://3.133.136.76/api/mains";
+        public string WebServiceUrl = $"{Constants.BASE_URL}/api/mains";
         public List<ReportData> DataList
         {
             get
@@ -705,7 +705,7 @@ namespace TireProject
         public async Task<List<ReportData>> GetAllData()
         {
             var httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://3.133.136.76/api/mains");
+            var json = await httpClient.GetStringAsync($"{Constants.BASE_URL}/api/mains");
 
             return JsonConvert.DeserializeObject<List<ReportData>>(json);
         }
@@ -713,14 +713,14 @@ namespace TireProject
         public async Task<string> GetAllDataForBackup()
         {
             var httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://3.133.136.76/api/mains/getalldata/");
+            var json = await httpClient.GetStringAsync($"{Constants.BASE_URL}/api/mains/getalldata/");
 
             return json;
         }
         public async Task<List<ReportData>> GetAllData(int start, int end,int sort)
         {
             var httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://3.133.136.76/api/mains/getalldata/" + start + "/" + end+ "/" + sort + "/");
+            var json = await httpClient.GetStringAsync($"{Constants.BASE_URL}/api/mains/getalldata/" + start + "/" + end+ "/" + sort + "/");
 
             return JsonConvert.DeserializeObject<List<ReportData>>(json);
         }
@@ -728,7 +728,7 @@ namespace TireProject
         public async Task GetSearchData(string search, int sort)
         {
             var httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://3.133.136.76/api/mains/getsearchdata/" + search + "/" + sort + "/");
+            var json = await httpClient.GetStringAsync($"{Constants.BASE_URL}/api/mains/getsearchdata/" + search + "/" + sort + "/");
 
             DataList = JsonConvert.DeserializeObject<List<ReportData>>(json);
         }
@@ -736,7 +736,7 @@ namespace TireProject
         public async Task GetSearchData(string search, int start, int end)
         {
             var httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://3.133.136.76/api/mains/getsearchdata/" + search + "/" + start + "/" + end);
+            var json = await httpClient.GetStringAsync($"{Constants.BASE_URL}/api/mains/getsearchdata/" + search + "/" + start + "/" + end);
 
             DataList = JsonConvert.DeserializeObject<List<ReportData>>(json);
         }

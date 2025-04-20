@@ -479,7 +479,7 @@ namespace TireProject
 
 
             var httpClient = new HttpClient();
-            var uploadservicebasedurl = "http://3.133.136.76/api/UploadPics/";
+            var uploadservicebasedurl = $"{Constants.BASE_URL}/api/UploadPics/";
             var httpresponseMessage = await httpClient.PostAsync(uploadservicebasedurl, content);
             string getname = await httpresponseMessage.Content.ReadAsStringAsync();
 
@@ -788,7 +788,7 @@ namespace TireProject
             var getCommand = (Button)sender;
             getCommand.IsEnabled = false;
             var httpClient = new HttpClient();
-            var response = await httpClient.DeleteAsync("http://3.133.136.76/api/mains/" + reportData.Id);
+            var response = await httpClient.DeleteAsync($"{Constants.BASE_URL}/api/mains/" + reportData.Id);
             if (response.IsSuccessStatusCode)
             {
                 lblpopmsg.Text = "Success";

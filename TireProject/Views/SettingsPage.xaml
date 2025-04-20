@@ -8,23 +8,23 @@
         <Grid>
             <ScrollView>
             <StackLayout Padding="10,20" Spacing="15">
-
                 <Label TextColor="#e74c3c" Text="Company Details" HorizontalTextAlignment="Center"/>
                 
                 <Frame x:Name="frphotos" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
-                <StackLayout>
+                    <StackLayout>
                         <Image x:Name="imglogo" HeightRequest="150"/>
-                    <ImageButton Clicked="Handle_Clicked_1" HeightRequest="55" Source="icocamera" />
-                    
-                </StackLayout>
-            </Frame> 
+                        <ImageButton Clicked="Handle_Clicked_1" HeightRequest="55" Source="icocamera" />
+                    </StackLayout>
+                </Frame> 
                 
+                <!-- Added Company Code field -->
+                <Entry BackgroundColor="White" x:Name="companyCodeEntry" Text="" Placeholder="Company Code"/>
                 <Entry BackgroundColor="White" x:Name="en1" Text="" Placeholder="Business Name"/>
                 <Editor BackgroundColor="White" x:Name="en2" Text="" Placeholder="Business Address"/>
                 <Editor BackgroundColor="White" x:Name="en3" Text="" Placeholder="Terms and Conditions"/>
                 <Button Clicked="Handle_Clicked" BackgroundColor="White" Text="SAVE" TextColor="#e74c3c"/>
             </StackLayout>
-                </ScrollView>
+            </ScrollView>
             <Frame IsVisible="false" HasShadow="false" x:Name="msgbox" Margin="10,20" VerticalOptions="End" BackgroundColor="White">
                 <Label x:Name="lblmsg" TextColor="#e74c3c" Text="Company Details" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
             </Frame>
