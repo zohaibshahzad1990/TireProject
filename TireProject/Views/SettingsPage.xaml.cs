@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 using Plugin.Media;
 using Xamarin.Forms;
@@ -12,12 +12,16 @@ namespace TireProject
 {
     public partial class SettingPage : ContentPage
     {
-        
         private Settings _currentSettings;
+        private ObservableCollection<string> _warehouseList = new ObservableCollection<string>();
+
         public SettingPage()
         {
             InitializeComponent();
             LoadSettings();
+
+            // Bind the warehouse list to the ListView
+            warehouseListView.ItemsSource = _warehouseList;
         }
 
         private async void LoadSettings()
@@ -32,6 +36,16 @@ namespace TireProject
                     en1.Text = _currentSettings.CompanyName;
                     en2.Text = _currentSettings.CompanyAddress;
                     en3.Text = _currentSettings.TermsAndConditions;
+
+                    // Load warehouses
+                    _warehouseList.Clear();
+                    if (_currentSettings.WareHouse != null)
+                    {
+                        foreach (var warehouse in _currentSettings.WareHouse)
+                        {
+                            _warehouseList.Add(warehouse);
+                        }
+                    }
                 }
 
                 if (Application.Current.Properties.ContainsKey("CName"))
@@ -47,13 +61,12 @@ namespace TireProject
                     en3.Text = Application.Current.Properties["CTerms"].ToString();
                 }
 
-
                 var pathImage = DependencyService.Get<IFileSave>().GetPicture();
                 imglogo.Source = pathImage;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "Failed to load settings", "OK");
+                await DisplayAlert("Error", "Failed to load settings: " + ex.Message, "OK");
             }
         }
 
@@ -89,23 +102,25 @@ namespace TireProject
 
             Application.Current.Properties["CAddress"] = en2.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(en1.Text))
+            if (string.IsNullOrWhiteSpace(en3.Text))
             {
                 lblmsg.Text = "Enter Terms and Conditions First!";
                 msgbox.IsVisible = true;
                 return;
             }
 
-            Application.Current.Properties["CTerms"] = en1.Text.Trim();
+            Application.Current.Properties["CTerms"] = en3.Text.Trim();
 
             try
             {
                 var settings = new Settings
                 {
+                    Id = _currentSettings?.Id,
                     CompanyCode = companyCodeEntry.Text.Trim(),
                     CompanyName = en1.Text?.Trim(),
                     CompanyAddress = en2.Text?.Trim(),
-                    TermsAndConditions = en3.Text?.Trim()
+                    TermsAndConditions = en3.Text?.Trim(),
+                    WareHouse = new List<string>(_warehouseList)
                 };
 
                 await SaveSettingsAsync(settings);
@@ -113,21 +128,19 @@ namespace TireProject
                 lblmsg.Text = "Saved!";
                 msgbox.IsVisible = true;
                 await Task.Delay(2000);
+                msgbox.IsVisible = false;
                 Application.Current.MainPage = new NavigationPage(new MainPage());
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "Failed to save settings", "OK");
+                await DisplayAlert("Error", "Failed to save settings: " + ex.Message, "OK");
             }
-
         }
 
         async void Handle_Clicked_1(object sender, System.EventArgs e)
         {
             var getCommand = (ImageButton)sender;
             getCommand.IsEnabled = false;
-
-
 
             await CrossMedia.Current.Initialize();
 
@@ -144,7 +157,6 @@ namespace TireProject
 
             var editImage = await DependencyService.Get<IImageResize>().ResizeImage(file.Path, "logotemp.png", 400, 400);
 
-
             using (var ms = new System.IO.FileStream(editImage, System.IO.FileMode.Open))
             {
                 DependencyService.Get<IFileSave>().SavePicture(ms);
@@ -152,14 +164,68 @@ namespace TireProject
                 ms.Dispose();
             }
 
-
             var pathImage = DependencyService.Get<IFileSave>().GetPicture();
             imglogo.Source = pathImage;
 
             getCommand.IsEnabled = true;
         }
 
+        // Warehouse management functions
+        void AddWarehouse_Clicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(warehouseEntry.Text))
+            {
+                lblmsg.Text = "Enter Warehouse Name First!";
+                msgbox.IsVisible = true;
+                return;
+            }
 
+            string warehouseName = warehouseEntry.Text.Trim();
+
+            // Check for duplicates
+            if (_warehouseList.Contains(warehouseName))
+            {
+                lblmsg.Text = "Warehouse already exists!";
+                msgbox.IsVisible = true;
+                return;
+            }
+
+            _warehouseList.Add(warehouseName);
+            warehouseEntry.Text = string.Empty; // Clear the entry field
+
+            lblmsg.Text = "Warehouse Added!";
+            msgbox.IsVisible = true;
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+            {
+                Device.BeginInvokeOnMainThread(() => msgbox.IsVisible = false);
+                return false;
+            });
+        }
+
+        void DeleteWarehouse_Clicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            string warehouseName = button.CommandParameter.ToString();
+
+            if (_warehouseList.Contains(warehouseName))
+            {
+                _warehouseList.Remove(warehouseName);
+
+                lblmsg.Text = "Warehouse Removed!";
+                msgbox.IsVisible = true;
+                Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+                {
+                    Device.BeginInvokeOnMainThread(() => msgbox.IsVisible = false);
+                    return false;
+                });
+            }
+        }
+
+        void WarehouseItem_Selected(object sender, SelectedItemChangedEventArgs e)
+        {
+            // Deselect the item
+            warehouseListView.SelectedItem = null;
+        }
 
         public async Task<Settings> GetSettingsAsync()
         {
@@ -181,7 +247,6 @@ namespace TireProject
                 response.EnsureSuccessStatusCode();
             }
         }
-
 
         public class Settings
         {

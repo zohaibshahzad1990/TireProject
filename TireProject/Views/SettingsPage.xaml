@@ -7,23 +7,70 @@
     <ContentPage.Content>
         <Grid>
             <ScrollView>
-            <StackLayout Padding="10,20" Spacing="15">
-                <Label TextColor="#e74c3c" Text="Company Details" HorizontalTextAlignment="Center"/>
-                
-                <Frame x:Name="frphotos" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
-                    <StackLayout>
-                        <Image x:Name="imglogo" HeightRequest="150"/>
-                        <ImageButton Clicked="Handle_Clicked_1" HeightRequest="55" Source="icocamera" />
-                    </StackLayout>
-                </Frame> 
-                
-                <!-- Added Company Code field -->
-                <Entry BackgroundColor="White" x:Name="companyCodeEntry" Text="" Placeholder="Company Code"/>
-                <Entry BackgroundColor="White" x:Name="en1" Text="" Placeholder="Business Name"/>
-                <Editor BackgroundColor="White" x:Name="en2" Text="" Placeholder="Business Address"/>
-                <Editor BackgroundColor="White" x:Name="en3" Text="" Placeholder="Terms and Conditions"/>
-                <Button Clicked="Handle_Clicked" BackgroundColor="White" Text="SAVE" TextColor="#e74c3c"/>
-            </StackLayout>
+                <StackLayout Padding="10,20" Spacing="15">
+                    <Label TextColor="#e74c3c" Text="Company Details" HorizontalTextAlignment="Center"/>
+
+                    <Frame x:Name="frphotos" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                        <StackLayout>
+                            <Image x:Name="imglogo" HeightRequest="150"/>
+                            <ImageButton Clicked="Handle_Clicked_1" HeightRequest="55" Source="icocamera" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Added Company Code field -->
+                    <Entry BackgroundColor="White" x:Name="companyCodeEntry" Text="" Placeholder="Company Code"/>
+                    <Entry BackgroundColor="White" x:Name="en1" Text="" Placeholder="Business Name"/>
+                    <Editor AutoSize="TextChanges" BackgroundColor="White" x:Name="en2" Text="" Placeholder="Business Address"/>
+                    <Editor AutoSize="TextChanges" BackgroundColor="White" x:Name="en3" Text="" Placeholder="Terms and Conditions"/>
+
+                    <!-- Warehouse Section -->
+                    <Label TextColor="#e74c3c" Text="Warehouses" HorizontalTextAlignment="Center"/>
+
+                    <Frame Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                        <StackLayout>
+                            <!-- New warehouse entry and add button -->
+                            <StackLayout Orientation="Horizontal">
+                                <Entry x:Name="warehouseEntry" Placeholder="Enter warehouse name" HorizontalOptions="FillAndExpand" BackgroundColor="#F5F5F5"/>
+                                <Button x:Name="addWarehouseButton" Text="+" 
+                                        Clicked="AddWarehouse_Clicked" 
+                                        WidthRequest="40" 
+                                        BackgroundColor="#4CAF50" 
+                                        TextColor="White"
+                                        FontAttributes="Bold"/>
+                            </StackLayout>
+
+                            <!-- List of warehouses -->
+                            <ListView x:Name="warehouseListView" 
+                                      HeightRequest="150" 
+                                      ItemSelected="WarehouseItem_Selected">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Grid Padding="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Text="{Binding}" 
+                                                       VerticalOptions="Center" 
+                                                       Grid.Column="0"/>
+                                                <Button Text="✕" 
+                                                        WidthRequest="40" 
+                                                        BackgroundColor="#e74c3c" 
+                                                        TextColor="White"
+                                                        CommandParameter="{Binding}"
+                                                        Clicked="DeleteWarehouse_Clicked"
+                                                        Grid.Column="1"/>
+                                            </Grid>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </Frame>
+
+                    <Button Clicked="Handle_Clicked" BackgroundColor="White" Text="SAVE" TextColor="#e74c3c"/>
+                </StackLayout>
             </ScrollView>
             <Frame IsVisible="false" HasShadow="false" x:Name="msgbox" Margin="10,20" VerticalOptions="End" BackgroundColor="White">
                 <Label x:Name="lblmsg" TextColor="#e74c3c" Text="Company Details" FontAttributes="Bold" HorizontalTextAlignment="Center"/>

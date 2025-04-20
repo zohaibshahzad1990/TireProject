@@ -6,6 +6,7 @@ namespace TireProject
 {
     public class Constants
     {
-        public static string BASE_URL= "http://3.133.136.76";
+        //public static string BASE_URL= "http://3.133.136.76";
+        public static string BASE_URL = "https://0c60-103-245-195-54.ngrok-free.app";
     }
 }
