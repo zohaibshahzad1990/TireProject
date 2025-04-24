@@ -24,6 +24,7 @@ namespace TireProject
         string warehh = null;
         string enrimtype = null;
         string enstorebtn = null;
+        List<string> warehouseCodes;
 
         public NewDetailPage()
         {
@@ -39,7 +40,10 @@ namespace TireProject
                     reportData.IfStaggered = EIfStag.No;
                     StkStagHide();
                     StkRimShow();
-                    listware.ItemsSource = new List<string> { "HR", "FV", "DC", "OR", "UT" };
+
+                    // Use Application.Current.Properties instead of hardcoded values
+                    LoadWarehouseCodes();
+                    listware.ItemsSource = warehouseCodes;
                 });
             });
         }
@@ -53,6 +57,9 @@ namespace TireProject
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    // Use Application.Current.Properties instead of hardcoded values
+                    LoadWarehouseCodes();
+
                     if (cloneornot == 0)
                     {
                         post = true;
@@ -65,54 +72,10 @@ namespace TireProject
                         enhome.Text = report.HomeNo;
                         enwork.Text = report.WorkNo;
                         enemail.Text = report.Email;
-                        if (report.ExtraRefNo.StartsWith("HR", StringComparison.Ordinal))
-                        {
-                            var ssd = report.ExtraRefNo;
-                            ssd = ssd.Replace("HR", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "HR";
-                            enstorageloc.Text = ssd;
-                            warehh = "HR";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("FV", StringComparison.Ordinal))
-                        {
-                            var ssd = report.ExtraRefNo;
-                            ssd = ssd.Replace("FV", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "FV";
-                            enstorageloc.Text = ssd;
-                            warehh = "FV";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("DC", StringComparison.Ordinal))
-                        {
-                            var ssd = report.ExtraRefNo;
-                            ssd = ssd.Replace("DC", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "DC";
-                            enstorageloc.Text = ssd;
-                            warehh = "DC";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("OR", StringComparison.Ordinal))
-                        {
-                            var ssd = report.ExtraRefNo;
-                            ssd = ssd.Replace("OR", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "OR";
-                            enstorageloc.Text = ssd;
-                            warehh = "OR";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("UT", StringComparison.Ordinal))
-                        {
-                            var ssd = report.ExtraRefNo;
-                            ssd = ssd.Replace("UT", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "UT";
-                            enstorageloc.Text = ssd;
-                            warehh = "UT";
-                        }
-                        else
-                        {
-                        }
+
+                        // Check if the ExtraRefNo starts with any of the warehouse codes
+                        ProcessWarehouseCode(report.ExtraRefNo);
+
                         enplateno.Text = report.PlateNo;
                         encartyear.Text = report.CarYear;
                         encarbrand.Text = report.CarBrand;
@@ -123,7 +86,7 @@ namespace TireProject
                         reportData.IfStaggered = EIfStag.No;
                         StkStagHide();
                         StkRimShow();
-                        listware.ItemsSource = new List<string> { "HR", "FV", "DC", "OR", "UT" };
+                        listware.ItemsSource = warehouseCodes;
                     }
                     else
                     {
@@ -139,54 +102,10 @@ namespace TireProject
                         enhome.Text = reportData.HomeNo;
                         enwork.Text = reportData.WorkNo;
                         enemail.Text = reportData.Email;
-                        if (report.ExtraRefNo.StartsWith("HR", StringComparison.Ordinal))
-                        {
-                            var ssd = reportData.ExtraRefNo;
-                            ssd = ssd.Replace("HR", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "HR";
-                            enstorageloc.Text = ssd;
-                            warehh = "HR";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("FV", StringComparison.Ordinal))
-                        {
-                            var ssd = reportData.ExtraRefNo;
-                            ssd = ssd.Replace("FV", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "FV";
-                            enstorageloc.Text = ssd;
-                            warehh = "FV";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("DC", StringComparison.Ordinal))
-                        {
-                            var ssd = reportData.ExtraRefNo;
-                            ssd = ssd.Replace("DC", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "DC";
-                            enstorageloc.Text = ssd;
-                            warehh = "DC";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("OR", StringComparison.Ordinal))
-                        {
-                            var ssd = reportData.ExtraRefNo;
-                            ssd = ssd.Replace("OR", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "OR";
-                            enstorageloc.Text = ssd;
-                            warehh = "OR";
-                        }
-                        else if (report.ExtraRefNo.StartsWith("UT", StringComparison.Ordinal))
-                        {
-                            var ssd = reportData.ExtraRefNo;
-                            ssd = ssd.Replace("UT", "");
-                            ssd = ssd.Trim();
-                            enwarehouse.Text = "UT";
-                            enstorageloc.Text = ssd;
-                            warehh = "UT";
-                        }
-                        else
-                        {
-                        }
+
+                        // Check if the ExtraRefNo starts with any of the warehouse codes
+                        ProcessWarehouseCode(reportData.ExtraRefNo);
+
                         enremark.Text = reportData.ExtraDate;
                         enrep.Text = reportData.REP;
                         enstorebtn = reportData.TireStoredUpto;
@@ -369,11 +288,49 @@ namespace TireProject
                             stkimage.Children.Add(imgchild);
                             im4 = reportData.Pic4;
                         }
-                        listware.ItemsSource = new List<string> { "HR", "FV", "DC", "OR", "UT" };
+                        listware.ItemsSource = warehouseCodes;
                     }
 
                 });
             });
+        }
+
+        // Load warehouse codes from Application.Current.Properties
+        private void LoadWarehouseCodes()
+        {
+            if (Application.Current.Properties.ContainsKey("CCode"))
+            {
+                string warehouseCodesStr = Application.Current.Properties["CCode"].ToString();
+                warehouseCodes = warehouseCodesStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim())
+                    .ToList();
+            }
+            else
+            {
+                // Fallback to default codes if property doesn't exist
+                warehouseCodes = new List<string> { "HR", "FV", "DC", "OR", "UT" };
+            }
+        }
+
+        // Process warehouse code from ExtraRefNo
+        private void ProcessWarehouseCode(string extraRefNo)
+        {
+            if (string.IsNullOrEmpty(extraRefNo))
+                return;
+
+            foreach (var code in warehouseCodes)
+            {
+                if (extraRefNo.StartsWith(code, StringComparison.Ordinal))
+                {
+                    var ssd = extraRefNo;
+                    ssd = ssd.Replace(code, "");
+                    ssd = ssd.Trim();
+                    enwarehouse.Text = code;
+                    enstorageloc.Text = ssd;
+                    warehh = code;
+                    return;
+                }
+            }
         }
 
         void EveBack(object sender, System.EventArgs e)
@@ -843,7 +800,7 @@ namespace TireProject
             else if (string.IsNullOrWhiteSpace(enplateno.Text.Trim())) { NullMsg("Plate Number Should not be Empty!"); return false; }
             else if (string.IsNullOrWhiteSpace(encarbrand.Text.Trim())) { NullMsg("Car Make Should not be Empty!"); return false; }
             else if (string.IsNullOrWhiteSpace(encarmodel.Text.Trim())) { NullMsg("Car Model Should not be Empty!"); return false; }
-            else if (!string.IsNullOrWhiteSpace(enstorageloc.Text.Trim()) && enwarehouse.Text.Equals("Warehouse")) { NullMsg("Select Warehouse Location!"); return false; }
+            else if (!string.IsNullOrWhiteSpace(enstorageloc.Text.Trim()) && string.IsNullOrWhiteSpace(warehh)) { NullMsg("Select Warehouse Location!"); return false; }
             else
             {
                 return true;
@@ -1226,8 +1183,6 @@ namespace TireProject
             HidePrint();
             getCommand.IsEnabled = true;
         }
-
-
 
         async void ShowPrint()
         {
