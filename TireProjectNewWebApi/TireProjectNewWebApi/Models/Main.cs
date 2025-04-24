@@ -148,7 +148,7 @@ namespace TireProjectNewWebApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string CompanyCode { get; set; }
+        public List<string> CompanyCode { get; set; } = new List<string>();
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string TermsAndConditions { get; set; }

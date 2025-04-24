@@ -17,8 +17,52 @@
                         </StackLayout>
                     </Frame>
 
-                    <!-- Added Company Code field -->
-                    <Entry BackgroundColor="White" x:Name="companyCodeEntry" Text="" Placeholder="Company Code"/>
+                    <!-- Company Code Section -->
+                    <Label TextColor="#e74c3c" Text="Company Codes" HorizontalTextAlignment="Center"/>
+
+                    <Frame Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                        <StackLayout>
+                            <!-- New company code entry and add button -->
+                            <StackLayout Orientation="Horizontal">
+                                <Entry x:Name="companyCodeEntry" Placeholder="Enter company code" HorizontalOptions="FillAndExpand" BackgroundColor="#F5F5F5"/>
+                                <Button x:Name="addCompanyCodeButton" Text="+" 
+                                        Clicked="AddCompanyCode_Clicked" 
+                                        WidthRequest="40" 
+                                        BackgroundColor="#4CAF50" 
+                                        TextColor="White"
+                                        FontAttributes="Bold"/>
+                            </StackLayout>
+
+                            <!-- List of company codes -->
+                            <ListView x:Name="companyCodeListView" 
+                                      HeightRequest="150" 
+                                      ItemSelected="CompanyCodeItem_Selected">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Grid Padding="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Text="{Binding}" 
+                                                       VerticalOptions="Center" 
+                                                       Grid.Column="0"/>
+                                                <Button Text="✕" 
+                                                        WidthRequest="40" 
+                                                        BackgroundColor="#e74c3c" 
+                                                        TextColor="White"
+                                                        CommandParameter="{Binding}"
+                                                        Clicked="DeleteCompanyCode_Clicked"
+                                                        Grid.Column="1"/>
+                                            </Grid>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </Frame>
+
                     <Entry BackgroundColor="White" x:Name="en1" Text="" Placeholder="Business Name"/>
                     <Editor AutoSize="TextChanges" BackgroundColor="White" x:Name="en2" Text="" Placeholder="Business Address"/>
                     <Editor AutoSize="TextChanges" BackgroundColor="White" x:Name="en3" Text="" Placeholder="Terms and Conditions"/>

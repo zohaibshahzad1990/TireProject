@@ -75,7 +75,47 @@ namespace TireProject
                     
             }
         }
+        bool isLoaded=false;
+        async Task LoadSettings()
+        {
+            if (!isLoaded)
+            {
+                try
+                {
+                    var settings = await SettingPage.GetSettingsAsync();
+                    Application.Current.Properties.Remove("CName");
+                    Application.Current.Properties.Remove("CAddress");
+                    Application.Current.Properties.Remove("CTerms");
+                    Application.Current.Properties.Remove("WLocations");
+                    Application.Current.Properties.Remove("CCode");
 
+                    if (!Application.Current.Properties.ContainsKey("CName"))
+                    {
+                        Application.Current.Properties["CName"] = settings.CompanyName;
+                    }
+                    if (!Application.Current.Properties.ContainsKey("WLocations"))
+                    {
+                        Application.Current.Properties["WLocations"] = settings.WareHouse != null && settings.WareHouse.Count > 0 ? string.Join(",", settings.WareHouse) : "";
+                    }
+                    if (!Application.Current.Properties.ContainsKey("CCode"))
+                    {
+                        Application.Current.Properties["CCode"] = settings.CompanyCode != null && settings.CompanyCode.Count > 0 ? string.Join(",", settings.WareHouse) : "";
+                    }
+                    if (!Application.Current.Properties.ContainsKey("CAddress"))
+                    {
+                        Application.Current.Properties["CAddress"] = settings.CompanyAddress;
+                    }
+                    if (!Application.Current.Properties.ContainsKey("CTerms"))
+                    {
+                        Application.Current.Properties["CTerms"] = settings.TermsAndConditions;
+                    }
+                    isLoaded = true;
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
         private async Task RunBackupData()
         {
             var result = await post.GetAllDataForBackup();
@@ -519,8 +559,9 @@ namespace TireProject
             searchBtn.IsEnabled = true;
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
+            await LoadSettings();
             base.OnAppearing();
         }
         protected override bool OnBackButtonPressed()

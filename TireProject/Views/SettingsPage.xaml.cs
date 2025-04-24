@@ -14,6 +14,7 @@ namespace TireProject
     {
         private Settings _currentSettings;
         private ObservableCollection<string> _warehouseList = new ObservableCollection<string>();
+        private ObservableCollection<string> _companyCodeList = new ObservableCollection<string>();
 
         public SettingPage()
         {
@@ -22,6 +23,9 @@ namespace TireProject
 
             // Bind the warehouse list to the ListView
             warehouseListView.ItemsSource = _warehouseList;
+
+            // Bind the company code list to the ListView
+            companyCodeListView.ItemsSource = _companyCodeList;
         }
 
         private async void LoadSettings()
@@ -32,10 +36,19 @@ namespace TireProject
 
                 if (_currentSettings != null)
                 {
-                    companyCodeEntry.Text = _currentSettings.CompanyCode;
                     en1.Text = _currentSettings.CompanyName;
                     en2.Text = _currentSettings.CompanyAddress;
                     en3.Text = _currentSettings.TermsAndConditions;
+
+                    // Load company codes
+                    _companyCodeList.Clear();
+                    if (_currentSettings.CompanyCode != null)
+                    {
+                        foreach (var code in _currentSettings.CompanyCode)
+                        {
+                            _companyCodeList.Add(code);
+                        }
+                    }
 
                     // Load warehouses
                     _warehouseList.Clear();
@@ -46,19 +59,6 @@ namespace TireProject
                             _warehouseList.Add(warehouse);
                         }
                     }
-                }
-
-                if (Application.Current.Properties.ContainsKey("CName"))
-                {
-                    en1.Text = Application.Current.Properties["CName"].ToString();
-                }
-                if (Application.Current.Properties.ContainsKey("CAddress"))
-                {
-                    en2.Text = Application.Current.Properties["CAddress"].ToString();
-                }
-                if (Application.Current.Properties.ContainsKey("CTerms"))
-                {
-                    en3.Text = Application.Current.Properties["CTerms"].ToString();
                 }
 
                 var pathImage = DependencyService.Get<IFileSave>().GetPicture();
@@ -77,12 +77,6 @@ namespace TireProject
 
         async void Handle_Clicked(object sender, System.EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(companyCodeEntry.Text))
-            {
-                lblmsg.Text = "Enter Company Code First!";
-                msgbox.IsVisible = true;
-                return;
-            }
 
             if (string.IsNullOrWhiteSpace(en1.Text))
             {
@@ -111,12 +105,30 @@ namespace TireProject
 
             Application.Current.Properties["CTerms"] = en3.Text.Trim();
 
+            if (_companyCodeList.Count==0)
+            {
+                lblmsg.Text = "Please enter atleast one company code";
+                msgbox.IsVisible = true;
+                return;
+            }
+
+            Application.Current.Properties["CCode"] = new List<string>(_companyCodeList) != null && new List<string>(_companyCodeList).Count > 0 ? string.Join(",", new List<string>(_companyCodeList)) : "";
+
+            if (new List<string>(_warehouseList).Count == 0)
+            {
+                lblmsg.Text = "Please enter atleast one warehouse location";
+                msgbox.IsVisible = true;
+                return;
+            }
+
+            Application.Current.Properties["WLocations"] = new List<string>(_warehouseList) != null && new List<string>(_warehouseList).Count > 0 ? string.Join(",", new List<string>(_warehouseList)) : "";
+
             try
             {
                 var settings = new Settings
                 {
                     Id = _currentSettings?.Id,
-                    CompanyCode = companyCodeEntry.Text.Trim(),
+                    CompanyCode = new List<string>(_companyCodeList),
                     CompanyName = en1.Text?.Trim(),
                     CompanyAddress = en2.Text?.Trim(),
                     TermsAndConditions = en3.Text?.Trim(),
@@ -168,6 +180,63 @@ namespace TireProject
             imglogo.Source = pathImage;
 
             getCommand.IsEnabled = true;
+        }
+
+        // Company Code management functions
+        void AddCompanyCode_Clicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(companyCodeEntry.Text))
+            {
+                lblmsg.Text = "Enter Company Code First!";
+                msgbox.IsVisible = true;
+                return;
+            }
+
+            string companyCode = companyCodeEntry.Text.Trim();
+
+            // Check for duplicates
+            if (_companyCodeList.Contains(companyCode))
+            {
+                lblmsg.Text = "Company Code already exists!";
+                msgbox.IsVisible = true;
+                return;
+            }
+
+            _companyCodeList.Add(companyCode);
+            companyCodeEntry.Text = string.Empty; // Clear the entry field
+
+            lblmsg.Text = "Company Code Added!";
+            msgbox.IsVisible = true;
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+            {
+                Device.BeginInvokeOnMainThread(() => msgbox.IsVisible = false);
+                return false;
+            });
+        }
+
+        void DeleteCompanyCode_Clicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            string companyCode = button.CommandParameter.ToString();
+
+            if (_companyCodeList.Contains(companyCode))
+            {
+                _companyCodeList.Remove(companyCode);
+
+                lblmsg.Text = "Company Code Removed!";
+                msgbox.IsVisible = true;
+                Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+                {
+                    Device.BeginInvokeOnMainThread(() => msgbox.IsVisible = false);
+                    return false;
+                });
+            }
+        }
+
+        void CompanyCodeItem_Selected(object sender, SelectedItemChangedEventArgs e)
+        {
+            // Deselect the item
+            companyCodeListView.SelectedItem = null;
         }
 
         // Warehouse management functions
@@ -227,7 +296,7 @@ namespace TireProject
             warehouseListView.SelectedItem = null;
         }
 
-        public async Task<Settings> GetSettingsAsync()
+        public static async Task<Settings> GetSettingsAsync()
         {
             using (var _httpClient = new HttpClient())
             {
@@ -251,7 +320,7 @@ namespace TireProject
         public class Settings
         {
             public string Id { get; set; }
-            public string CompanyCode { get; set; }
+            public List<string> CompanyCode { get; set; } = new List<string>();
             public string CompanyName { get; set; }
             public string CompanyAddress { get; set; }
             public string TermsAndConditions { get; set; }
