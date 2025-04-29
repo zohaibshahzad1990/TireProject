@@ -99,7 +99,7 @@ namespace TireProject
                     }
                     if (!Application.Current.Properties.ContainsKey("CCode"))
                     {
-                        Application.Current.Properties["CCode"] = settings.CompanyCode != null && settings.CompanyCode.Count > 0 ? string.Join(",", settings.WareHouse) : "";
+                        Application.Current.Properties["CCode"] = settings.CompanyCode != null && settings.CompanyCode.Count > 0 ? string.Join(",", settings.CompanyCode) : "";
                     }
                     if (!Application.Current.Properties.ContainsKey("CAddress"))
                     {

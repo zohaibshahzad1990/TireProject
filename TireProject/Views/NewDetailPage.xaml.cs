@@ -298,9 +298,9 @@ namespace TireProject
         // Load warehouse codes from Application.Current.Properties
         private void LoadWarehouseCodes()
         {
-            if (Application.Current.Properties.ContainsKey("CCode"))
+            if (Application.Current.Properties.ContainsKey("WLocations"))
             {
-                string warehouseCodesStr = Application.Current.Properties["CCode"].ToString();
+                string warehouseCodesStr = Application.Current.Properties["WLocations"].ToString();
                 warehouseCodes = warehouseCodesStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => s.Trim())
                     .ToList();
