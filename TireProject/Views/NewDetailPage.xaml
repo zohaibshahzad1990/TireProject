@@ -204,7 +204,7 @@
             </Frame>
                     
                    
-                        <Frame x:Name="frstoragedetail" IsVisible="true" Margin="10,10,10,500" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                        <Frame x:Name="frstoragedetail" IsVisible="true" Margin="10,10,10,10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
                 <StackLayout>
                     <Grid>
                         <Label VerticalOptions="CenterAndExpand" Text="Storage Location (Official Use Only)" TextColor="Black" Grid.Row="0" Grid.Column="0"/>
@@ -213,10 +213,17 @@
                     </Grid>
                 </StackLayout>
             </Frame>
-                        
-                        
-                        
-                    <Frame x:Name="frphotos" IsVisible="false" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                        <Frame x:Name="frcompanydetail" IsVisible="true" Margin="10,10,10,500"  Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
+                            <StackLayout>
+                                <Grid>
+                                    <Label VerticalOptions="CenterAndExpand" Text="Company Code (Official Use Only)" TextColor="Black" Grid.Row="0" Grid.Column="0"/>
+                                    <Button Clicked="Handle_Clicked_CompanyCode" TextColor="#e74c3c" VerticalOptions="CenterAndExpand" x:Name="encompany" Text="Company Code" Grid.Row="0" Grid.Column="1" HorizontalOptions="End"/>
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+
+
+                        <Frame x:Name="frphotos" IsVisible="false" Margin="10" Padding="10" CornerRadius="2" HasShadow="false" BackgroundColor="White">
                 <StackLayout>
                                 <StackLayout Orientation="Horizontal">
                                     <Label Margin="10" Text="PHOTOS" HorizontalOptions="CenterAndExpand" TextColor="#e74c3c"/>
@@ -264,7 +271,21 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Frame>
-            
+
+            <Frame x:Name="selcompany" IsVisible="false" Margin="20" Padding="0,5" VerticalOptions="Center" HasShadow="false" BackgroundColor="White">
+                <ListView x:Name="listcompany" HeightRequest="205" VerticalOptions="Center" HasUnevenRows="true" SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Spacing="0">
+                                    <Button Clicked="Handle_Clicked_CompanySelection" HeightRequest="50" BorderWidth="0" BackgroundColor="Transparent" Text="{Binding .}" TextColor="#e74c3c"/>
+                                    <BoxView HeightRequest="1" BackgroundColor="#D4E3F3"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
             <Frame x:Name="frmsg" HasShadow="false" IsVisible="false" Margin="20,0,20,100" BackgroundColor="#e74c3c" VerticalOptions="End">
                 <Label x:Name="lblpopmsg" Text="" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="White"/>
             </Frame>

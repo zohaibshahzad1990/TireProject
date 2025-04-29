@@ -25,7 +25,8 @@ namespace TireProject
         string enrimtype = null;
         string enstorebtn = null;
         List<string> warehouseCodes;
-
+        string companyh = null; // For company code
+        List<string> companyCodes; // For company codes list
         public NewDetailPage()
         {
             InitializeComponent();
@@ -44,6 +45,8 @@ namespace TireProject
                     // Use Application.Current.Properties instead of hardcoded values
                     LoadWarehouseCodes();
                     listware.ItemsSource = warehouseCodes;
+                    LoadCompanyCodes();
+                    listcompany.ItemsSource = companyCodes;
                 });
             });
         }
@@ -59,7 +62,7 @@ namespace TireProject
                 {
                     // Use Application.Current.Properties instead of hardcoded values
                     LoadWarehouseCodes();
-
+                    LoadCompanyCodes();
                     if (cloneornot == 0)
                     {
                         post = true;
@@ -76,6 +79,12 @@ namespace TireProject
                         // Check if the ExtraRefNo starts with any of the warehouse codes
                         ProcessWarehouseCode(report.ExtraRefNo);
 
+                        if (!string.IsNullOrEmpty(report.CompanyCode))
+                        {
+                            companyh = report.CompanyCode;
+                            encompany.Text = report.CompanyCode;
+                        }
+
                         enplateno.Text = report.PlateNo;
                         encartyear.Text = report.CarYear;
                         encarbrand.Text = report.CarBrand;
@@ -87,6 +96,7 @@ namespace TireProject
                         StkStagHide();
                         StkRimShow();
                         listware.ItemsSource = warehouseCodes;
+                        listcompany.ItemsSource = companyCodes;
                     }
                     else
                     {
@@ -105,6 +115,12 @@ namespace TireProject
 
                         // Check if the ExtraRefNo starts with any of the warehouse codes
                         ProcessWarehouseCode(reportData.ExtraRefNo);
+
+                        if (!string.IsNullOrEmpty(report.CompanyCode))
+                        {
+                            companyh = report.CompanyCode;
+                            encompany.Text = report.CompanyCode;
+                        }
 
                         enremark.Text = reportData.ExtraDate;
                         enrep.Text = reportData.REP;
@@ -289,6 +305,7 @@ namespace TireProject
                             im4 = reportData.Pic4;
                         }
                         listware.ItemsSource = warehouseCodes;
+                        listcompany.ItemsSource = companyCodes;
                     }
 
                 });
@@ -312,6 +329,38 @@ namespace TireProject
             }
         }
 
+        private void LoadCompanyCodes()
+        {
+            if (Application.Current.Properties.ContainsKey("CCode"))
+            {
+                string companyCodesStr = Application.Current.Properties["CCode"].ToString();
+                companyCodes = companyCodesStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim())
+                    .ToList();
+            }
+            else
+            {
+                // Fallback to default codes if property doesn't exist
+                companyCodes = new List<string> { "CC1", "CC2", "CC3", "CC4", "CC5" };
+            }
+        }
+        void Handle_Clicked_CompanyCode(object sender, System.EventArgs e)
+        {
+            stkBack.IsVisible = true;
+            selcompany.IsVisible = true;
+        }
+
+        void Handle_Clicked_CompanySelection(object sender, System.EventArgs e)
+        {
+            var getCommand = (Button)sender;
+            getCommand.IsEnabled = false;
+            var companyCode = (string)getCommand.BindingContext;
+            companyh = companyCode;
+            encompany.Text = companyCode;
+            selcompany.IsVisible = false;
+            stkBack.IsVisible = false;
+            getCommand.IsEnabled = true;
+        }
         // Process warehouse code from ExtraRefNo
         private void ProcessWarehouseCode(string extraRefNo)
         {
@@ -337,6 +386,13 @@ namespace TireProject
         {
             if (busycheck)
             {
+                stkBack.IsVisible = false;
+            }
+
+            // Hide company code selection popup if visible
+            if (selcompany.IsVisible)
+            {
+                selcompany.IsVisible = false;
                 stkBack.IsVisible = false;
             }
         }
@@ -409,6 +465,7 @@ namespace TireProject
                     btnDone.IsVisible = false;
                     frpersonal.IsVisible = false;
                     frstoragedetail.IsVisible = false;
+                    frcompanydetail.IsVisible = false;
                     frtiredetail.IsVisible = true;
                     frvehicledetail.IsVisible = false;
                     frphotos.IsVisible = false;
@@ -584,6 +641,7 @@ namespace TireProject
                 btnDone.IsVisible = false;
                 frpersonal.IsVisible = false;
                 frstoragedetail.IsVisible = false;
+                frcompanydetail.IsVisible = false;
                 frtiredetail.IsVisible = true;
                 frvehicledetail.IsVisible = false;
                 frphotos.IsVisible = false;
@@ -597,6 +655,7 @@ namespace TireProject
                 frphotos.IsVisible = false;
                 frpersonal.IsVisible = true;
                 frstoragedetail.IsVisible = true;
+                frcompanydetail.IsVisible = true;
                 frtiredetail.IsVisible = false;
                 btnNext.IsVisible = true;
                 tooitem.Text = "SAVE";
@@ -615,6 +674,7 @@ namespace TireProject
                 btnDone.IsVisible = false;
                 frpersonal.IsVisible = false;
                 frstoragedetail.IsVisible = false;
+                frcompanydetail.IsVisible = false;
                 frtiredetail.IsVisible = true;
                 frvehicledetail.IsVisible = false;
                 frphotos.IsVisible = false;
@@ -630,6 +690,7 @@ namespace TireProject
                 frphotos.IsVisible = false;
                 frpersonal.IsVisible = true;
                 frstoragedetail.IsVisible = true;
+                frcompanydetail.IsVisible = true;
                 frtiredetail.IsVisible = false;
                 btnNext.IsVisible = true;
                 tooitem.Text = "SAVE";
@@ -728,6 +789,7 @@ namespace TireProject
                         frvehicledetail.IsVisible = false;
                         frpersonal.IsVisible = false;
                         frstoragedetail.IsVisible = false;
+                        frcompanydetail.IsVisible = false;
                         frtiredetail.IsVisible = false;
                         frphotos.IsVisible = true;
                         tooitem.Text = "SAVE";
@@ -818,6 +880,10 @@ namespace TireProject
             reportData.WorkNo = enwork.Text.Trim();
             reportData.Email = enemail.Text.Trim();
             reportData.NoOfTires = ennumtyre.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(companyh))
+                reportData.CompanyCode = companyh;
+            else
+                reportData.CompanyCode = "";
             if (!string.IsNullOrWhiteSpace(warehh))
                 reportData.ExtraRefNo = warehh + " " + enstorageloc.Text.Trim();
             else
