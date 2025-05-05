@@ -60,8 +60,8 @@ namespace TireProject
             var fontName = systemHelper.GetDefaultSystemFont();
 
             var font = new XFont(fontName, 20);
-            var fontBold = new XFont(fontName, 20, XFontStyle.Regular);
-            var fontItalic = new XFont(fontName, 20, XFontStyle.Italic);
+            var fontBold = new XFont(fontName, 20, XFontStyleEx.Regular);
+            var fontItalic = new XFont(fontName, 20, XFontStyleEx.Italic);
 
             data.RefNo = data.RefNo != null ? data.RefNo : "null";
             data.TireStoredUpto = data.TireStoredUpto != null ? data.TireStoredUpto : "null";
@@ -114,124 +114,124 @@ namespace TireProject
             var platnotemp = data.PlateNo.Replace(" ","");
 
             //1
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
+            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 35, page.Width / 2, 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 45, (page.Width / 2) - 20, 70), XStringFormats.Center);
+            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 45, (page.Width / 2) - 20, 70), XStringFormats.Center);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 130, page.Width / 2, 130);
-            gfx.DrawString(data.CarBrand+" "+ data.CarModel, new XFont(fontName, 30, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
+            gfx.DrawString(data.CarBrand+" "+ data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 180, page.Width / 2, 180);
 
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2)-20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: "+data.NoOfTires, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2)-20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("Qty: "+data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
+            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
 
-            gfx.DrawString(data.FName+" " + data.LName, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.FName+" " + data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 270, page.Width / 2, 270);
 
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)/2)-30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
+            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)/2)-30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
 
 
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
+            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
 
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             //2
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
+            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), 35, page.Width, 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 45, (page.Width / 2) - 20, 70), XStringFormats.Center);
+            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 45, (page.Width / 2) - 20, 70), XStringFormats.Center);
 
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, 130, page.Width , 130);
-            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
+            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, 180, page.Width , 180);
 
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
+            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
 
-            gfx.DrawString(data.FName +" " + data.LName, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.FName +" " + data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), 270, page.Width, 270);
 
 
             
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
+            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
 
 
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
+            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
 
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
 
             //3
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
+            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2)+35, page.Width / 2, (page.Height / 2) + 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2)+45, (page.Width / 2) - 20, 70), XStringFormats.Center);
+            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2)+45, (page.Width / 2) - 20, 70), XStringFormats.Center);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2) +130, page.Width / 2, (page.Height / 2)+ 130);
-            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
+            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2) + 180, page.Width / 2, (page.Height / 2)+ 180);
 
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
+            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
 
-            gfx.DrawString(data.FName + " " + data.LName, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.FName + " " + data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2) + 270, page.Width / 2, (page.Height / 2) + 270);
 
 
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
+            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
 
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
+            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
             
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2)+ 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2) + 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2) + 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2)+ 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2) + 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2) + 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             //4
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
+            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), (page.Height / 2) + 35, page.Width, (page.Height / 2) + 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, (page.Height / 2)+45, (page.Width / 2) - 20, 70), XStringFormats.Center);
+            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, (page.Height / 2)+45, (page.Width / 2) - 20, 70), XStringFormats.Center);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, (page.Height / 2) + 130, page.Width , (page.Height / 2) + 130);
-            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyle.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
+            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, (page.Height / 2) + 180, page.Width , (page.Height / 2) + 180);
 
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
+            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
 
-            gfx.DrawString(data.FName+" "+ data.LName, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString(data.FName+" "+ data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), (page.Height / 2) + 270, page.Width, (page.Height / 2) + 270);
 
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
+            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
 
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
+            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
 
             
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
 
             lblbusy.Text = "Successfully Loaded!";
             //////////////////////////

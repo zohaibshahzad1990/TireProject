@@ -11,6 +11,8 @@ namespace TireProjectNewWebApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string CompanyLogo { get; set; }
+        public string CompanyCode { get; set; }
+
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string TermCondition { get; set; }

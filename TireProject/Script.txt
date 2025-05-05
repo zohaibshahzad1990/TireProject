@@ -56,16 +56,16 @@ void EveGenerate(object sender, System.EventArgs e)
             var fontName = systemHelper.GetDefaultSystemFont();
 
             var font = new XFont(fontName, 20);
-            var fontBold = new XFont(fontName, 20, XFontStyle.Regular);
-            var fontItalic = new XFont(fontName, 20, XFontStyle.Italic);
+            var fontBold = new XFont(fontName, 20, XFontStyleEx.Regular);
+            var fontItalic = new XFont(fontName, 20, XFontStyleEx.Italic);
 
 
-            gfx.DrawString("Tire Storage Reciept", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4)-10 , 20, (page.Width / 4) , 13),XStringFormats.TopCenter);
+            gfx.DrawString("Tire Storage Reciept", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4)-10 , 20, (page.Width / 4) , 13),XStringFormats.TopCenter);
 
-            gfx.DrawString("Ref No.", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),new XRect(page.Width - (page.Width / 4) - 10, 38, (page.Width / 4), 13),XStringFormats.TopLeft);
+            gfx.DrawString("Ref No.", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),new XRect(page.Width - (page.Width / 4) - 10, 38, (page.Width / 4), 13),XStringFormats.TopLeft);
 
 
-            gfx.DrawString("Date: ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 53, (page.Width / 4), 13),XStringFormats.TopLeft);
+            gfx.DrawString("Date: ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 53, (page.Width / 4), 13),XStringFormats.TopLeft);
 
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 10, 95, page.Width-10, 95);
@@ -74,125 +74,125 @@ void EveGenerate(object sender, System.EventArgs e)
             //gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 10, 120, page.Width - 10, 120);
             //A
 
-            gfx.DrawString("Customer Details", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 115, (page.Width / 2)-20, 13), XStringFormats.TopCenter);
+            gfx.DrawString("Customer Details", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 115, (page.Width / 2)-20, 13), XStringFormats.TopCenter);
 
-            gfx.DrawString("Ref No : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),new XRect( 10,150, (page.Width/4) - 10, 15),XStringFormats.TopLeft);
-            gfx.DrawString("Date : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width/4)+10, 150, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("Ref No : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),new XRect( 10,150, (page.Width/4) - 10, 15),XStringFormats.TopLeft);
+            gfx.DrawString("Date : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width/4)+10, 150, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 10, 170, (page.Width/2) - 10, 170);
 
-            gfx.DrawString("First Name : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 180, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
-            gfx.DrawString("last Name : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 180, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("First Name : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 180, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("last Name : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 180, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
 
-            gfx.DrawString("MI : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 200, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("MI : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 200, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
 
-            gfx.DrawString("Address : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 220, (page.Width / 2) - 10, 25), XStringFormats.CenterLeft);
-            gfx.DrawString("Cell No : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 250, (page.Width / 2) - 10, 15), XStringFormats.TopLeft);
-            gfx.DrawString("Home : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 270, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
-            gfx.DrawString("Work : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 270, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
-            gfx.DrawString("Email : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 290, (page.Width / 2) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("Address : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 220, (page.Width / 2) - 10, 25), XStringFormats.CenterLeft);
+            gfx.DrawString("Cell No : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 250, (page.Width / 2) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("Home : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 270, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("Work : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 270, (page.Width / 4) - 10, 15), XStringFormats.TopLeft);
+            gfx.DrawString("Email : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 290, (page.Width / 2) - 10, 15), XStringFormats.TopLeft);
 
             //gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width/2, 120, page.Width /2, (page.Height - 250 + 120) / 2);
             //B
 
 
-            gfx.DrawString("TIRE STORAGE DETAIL", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width/2)+10, 115, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
+            gfx.DrawString("TIRE STORAGE DETAIL", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width/2)+10, 115, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
 
-            gfx.DrawString("Types  of Tire", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),(page.Width/2)+10,160);
+            gfx.DrawString("Types  of Tire", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),(page.Width/2)+10,160);
 
-            gfx.DrawString("All Season", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 160);
+            gfx.DrawString("All Season", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 160);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 170, 150, 15, 15);
 
-            gfx.DrawString("Summer", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 160);
+            gfx.DrawString("Summer", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 160);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 260, 150, 15, 15);
 
-            gfx.DrawString("Winter", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 180);
+            gfx.DrawString("Winter", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 180);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 170, 170, 15, 15);
-            gfx.DrawString("Other", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 180);
+            gfx.DrawString("Other", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 180);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 260, 170, 15, 15);
 
 
-            gfx.DrawString("Tire Size", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 200);
-            gfx.DrawString("If Staggered", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 140, 200);
+            gfx.DrawString("Tire Size", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 200);
+            gfx.DrawString("If Staggered", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 140, 200);
 
-            gfx.DrawString("RIM Attached", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 220);
-            gfx.DrawString("Yes", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 220);
+            gfx.DrawString("RIM Attached", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 220);
+            gfx.DrawString("Yes", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 220);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 170, 210, 15, 15);
-            gfx.DrawString("No", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 220);
+            gfx.DrawString("No", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 220);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 260, 210, 15, 15);
 
-            gfx.DrawString("Type of RIM", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 240);
-            gfx.DrawString("Steel", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 240);
+            gfx.DrawString("Type of RIM", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 240);
+            gfx.DrawString("Steel", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 240);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 170, 230, 15, 15);
-            gfx.DrawString("Alloy", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 240);
+            gfx.DrawString("Alloy", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 240);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 260, 230, 15, 15);
 
-            gfx.DrawString("OEM", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 260);
+            gfx.DrawString("OEM", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 260);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 170, 250, 15, 15);
-            gfx.DrawString("Other", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 260);
+            gfx.DrawString("Other", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 260);
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 260, 250, 15, 15);
 
 
 
-            gfx.DrawString("Tire Depth", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 280);
+            gfx.DrawString("Tire Depth", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 280);
 
-            gfx.DrawString("LF:", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 280);
-            gfx.DrawString("LR:", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 280);
+            gfx.DrawString("LF:", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 280);
+            gfx.DrawString("LR:", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 280);
 
-            gfx.DrawString("RF:", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 300);
-            gfx.DrawString("RR:", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 300);
+            gfx.DrawString("RF:", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 100, 300);
+            gfx.DrawString("RR:", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 200, 300);
 
-            gfx.DrawString("Tire Stored Upto", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 320);
+            gfx.DrawString("Tire Stored Upto", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 10, 320);
 
 
 
             //gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 10, (page.Height - 250+120)/2, page.Width - 10, (page.Height - 250 + 120) / 2);
             //C
-            gfx.DrawString("Vehicle Details", new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height - 100) / 2, (page.Width/2)-10, 13), XStringFormats.TopCenter);
-            gfx.DrawString("Plate Number : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 170 + 120) / 2, (page.Width / 2)-40, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Make/Model : ", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 130 + 120) / 2, (page.Width / 2) - 40, 13), XStringFormats.TopLeft);
+            gfx.DrawString("Vehicle Details", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height - 100) / 2, (page.Width/2)-10, 13), XStringFormats.TopCenter);
+            gfx.DrawString("Plate Number : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 170 + 120) / 2, (page.Width / 2)-40, 13), XStringFormats.TopLeft);
+            gfx.DrawString("Make/Model : ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 130 + 120) / 2, (page.Width / 2) - 40, 13), XStringFormats.TopLeft);
 
 
             //Terms& Condition
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), 10, page.Height - 230, page.Width-20, 130);
-            gfx.DrawString("Terms & Conditions", new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, page.Height - 220, page.Width / 2 - 65, 15), XStringFormats.TopLeft);
+            gfx.DrawString("Terms & Conditions", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, page.Height - 220, page.Width / 2 - 65, 15), XStringFormats.TopLeft);
             //Authorize Signature
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), 10, page.Height-90, (page.Width / 2)-75, 80);
-            gfx.DrawString("Authorized Representative", new XFont(fontName,10,XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, page.Height - 95, page.Width / 2-75, 80),XStringFormats.BottomCenter);
+            gfx.DrawString("Authorized Representative", new XFont(fontName,10,XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, page.Height - 95, page.Width / 2-75, 80),XStringFormats.BottomCenter);
             //Customer Signature
             gfx.DrawRectangle(new XPen(XColor.FromArgb(0, 0, 0)), page.Width-((page.Width / 2) - 75)-10, page.Height - 90, (page.Width / 2) - 75, 80);
-            gfx.DrawString("Customer Signature", new XFont(fontName, 10, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - ((page.Width / 2) - 75), page.Height - 95, page.Width / 2 - 75, 80), XStringFormats.BottomLeft);
-            gfx.DrawString("Date:", new XFont(fontName, 10, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - ((page.Width / 2) - 180), page.Height - 95, page.Width / 2 - 75, 80), XStringFormats.BottomLeft);
+            gfx.DrawString("Customer Signature", new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - ((page.Width / 2) - 75), page.Height - 95, page.Width / 2 - 75, 80), XStringFormats.BottomLeft);
+            gfx.DrawString("Date:", new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - ((page.Width / 2) - 180), page.Height - 95, page.Width / 2 - 75, 80), XStringFormats.BottomLeft);
 
             ////////////////////////
             if (reportData.CompanyName != null) 
             {
                 //Header
-                gfx.DrawString(reportData.CompanyName, new XFont(fontName, 13, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), 10, 30);
-                left.DrawString(reportData.CompanyAddress, new XFont(fontName, 10, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 38, 100, 78), XStringFormats.TopLeft);
-                gfx.DrawString(reportData.MainRefNo, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 38, (page.Width / 4), 13), XStringFormats.TopRight);
-                gfx.DrawString(reportData.MainDate, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 53, (page.Width / 4), 13), XStringFormats.TopRight);
+                gfx.DrawString(reportData.CompanyName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), 10, 30);
+                left.DrawString(reportData.CompanyAddress, new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 38, 100, 78), XStringFormats.TopLeft);
+                gfx.DrawString(reportData.MainRefNo, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 38, (page.Width / 4), 13), XStringFormats.TopRight);
+                gfx.DrawString(reportData.MainDate, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 53, (page.Width / 4), 13), XStringFormats.TopRight);
 
                 //Customer Detail
-                gfx.DrawString(reportData.CusRefNo, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 150, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.CusDate, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 150, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.FName, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 180, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.LName, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 180, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.MI, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 200, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.CusAddress, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 220, (page.Width / 2) - 20, 25), XStringFormats.CenterRight);
-                gfx.DrawString(reportData.CellNo, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 250, (page.Width / 2) - 20, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.Home, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 270, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.Work, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 270, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
-                gfx.DrawString(reportData.Email, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 290, (page.Width / 2) - 20, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.CusRefNo, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 150, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.CusDate, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 150, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.FName, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 180, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.LName, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 180, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.MI, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 200, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.CusAddress, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 220, (page.Width / 2) - 20, 25), XStringFormats.CenterRight);
+                gfx.DrawString(reportData.CellNo, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 250, (page.Width / 2) - 20, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.Home, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 270, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.Work, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 270, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
+                gfx.DrawString(reportData.Email, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 290, (page.Width / 2) - 20, 15), XStringFormats.TopRight);
 
                 //Tire Storage Detail
-                gfx.DrawString(reportData.TireSize, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 65, 200);
-                gfx.DrawString(reportData.IfStaggered, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 215, 200);
-                gfx.DrawString(reportData.LF, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 120, 280);
-                gfx.DrawString(reportData.LR, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 220, 280);
-                gfx.DrawString(reportData.RF, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 120, 300);
-                gfx.DrawString(reportData.RR, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 220, 300);
-                gfx.DrawString(reportData.TireStoredUpto, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 110, 320);
+                gfx.DrawString(reportData.TireSize, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 65, 200);
+                gfx.DrawString(reportData.IfStaggered, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 215, 200);
+                gfx.DrawString(reportData.LF, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 120, 280);
+                gfx.DrawString(reportData.LR, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 220, 280);
+                gfx.DrawString(reportData.RF, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 120, 300);
+                gfx.DrawString(reportData.RR, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 220, 300);
+                gfx.DrawString(reportData.TireStoredUpto, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), (page.Width / 2) + 110, 320);
                 //Checked Box Season
                 switch (reportData.TireSeason)
                 {
@@ -245,8 +245,8 @@ void EveGenerate(object sender, System.EventArgs e)
                 }
 
                 //Vehicle Detail
-                gfx.DrawString(reportData.PlateNo, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 170 + 120) / 2, (page.Width / 2) - 40, 13), XStringFormats.TopRight);
-                gfx.DrawString(reportData.MakeModel, new XFont(fontName, 12, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 130 + 120) / 2, (page.Width / 2) - 40, 13), XStringFormats.TopRight);
+                gfx.DrawString(reportData.PlateNo, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 170 + 120) / 2, (page.Width / 2) - 40, 13), XStringFormats.TopRight);
+                gfx.DrawString(reportData.MakeModel, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, (page.Height - 130 + 120) / 2, (page.Width / 2) - 40, 13), XStringFormats.TopRight);
 
                 //Four Images 
                 gfx.DrawImage(XImage.FromFile(reportData.Pic1), new XRect((page.Width / 2) + 10, (page.Height - 250 + 130) / 2, page.Width / 4 - 20, ((page.Height - 270) - ((page.Height - 250 + 120) / 2)) / 2));
@@ -255,11 +255,11 @@ void EveGenerate(object sender, System.EventArgs e)
                 gfx.DrawImage(XImage.FromFile(reportData.Pic4), new XRect(page.Width - (page.Width / 4), ((page.Height - 250) + ((page.Height - 250 + 120) / 2)) / 2, page.Width / 4 - 20, ((page.Height - 270) - ((page.Height - 250 + 120) / 2)) / 2));
 
                 //Term And Condition
-                left.DrawString(reportData.TermCondition, new XFont(fontName, 10, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, page.Height - 190, page.Width - 30, 120), XStringFormats.TopLeft);
+                left.DrawString(reportData.TermCondition, new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(20, page.Height - 190, page.Width - 30, 120), XStringFormats.TopLeft);
                 //Footer
                 gfx.DrawImage(XImage.FromFile(reportData.AuthorizeSign), 10, page.Height - 90, (page.Width / 2) - 75, 65);
                 gfx.DrawImage(XImage.FromFile(reportData.CustomerSign), page.Width - ((page.Width / 2) - 75) - 10, page.Height - 90, (page.Width / 2) - 75, 65);
-                gfx.DrawString(reportData.CusSignDate, new XFont(fontName, 10, XFontStyle.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - ((page.Width / 2) - 210), page.Height - 95, page.Width / 2 - 75, 80), XStringFormats.BottomLeft);
+                gfx.DrawString(reportData.CusSignDate, new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - ((page.Width / 2) - 210), page.Height - 95, page.Width / 2 - 75, 80), XStringFormats.BottomLeft);
 
             }
 

@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="PDFsharp-extended" Version="1.1.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.4" />
     <PackageReference Include="ZXing.Net.Mobile" Version="3.1.0-beta2" />
@@ -38,9 +39,6 @@
   <ItemGroup>
     
     <Compile Remove="PrintTirelabelPageA6 - Copy.xaml.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Library\PdfSharp.PCL\PdfSharp.PCL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />

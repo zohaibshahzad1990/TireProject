@@ -126,10 +126,10 @@ namespace TireProject
             var fontName = systemHelper.GetDefaultSystemFont();
 
             // Fonts for different sections
-            XFont headerFont = new XFont(fontName, 18, XFontStyle.Bold);
+            XFont headerFont = new XFont(fontName, 18, XFontStyleEx.Bold);
             XFont subheaderFont = new XFont(fontName, 14);
-            XFont plateFont = new XFont(fontName, 42, XFontStyle.Bold);
-            XFont carInfoFont = new XFont(fontName, 18, XFontStyle.Bold);
+            XFont plateFont = new XFont(fontName, 42, XFontStyleEx.Bold);
+            XFont carInfoFont = new XFont(fontName, 18, XFontStyleEx.Bold);
             XFont normalFont = new XFont(fontName, 11);
             XFont smallFont = new XFont(fontName, 8);
 
