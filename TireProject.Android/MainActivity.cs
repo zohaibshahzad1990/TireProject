@@ -30,6 +30,7 @@ namespace TireProject.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static Activity MyActivity { get; set; }
+        public static Action<int, string[], Permission[]> RequestPermissionAction { get; set; }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -74,6 +75,8 @@ namespace TireProject.Droid
             Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            // Invoke the delegate if it's set
+            RequestPermissionAction?.Invoke(requestCode, permissions, grantResults);
         }
     }
 }
