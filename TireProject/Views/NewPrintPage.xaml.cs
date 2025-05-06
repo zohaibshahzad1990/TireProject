@@ -106,9 +106,23 @@ namespace TireProject
             gfx.DrawString("Ref No.", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 3) - 10, 38, (page.Width / 4), 13), XStringFormats.TopLeft);
 
 
-            gfx.DrawString("Date: ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 3) - 10, 53, (page.Width / 4), 13), XStringFormats.TopLeft);
-            gfx.DrawString("Storage Location: ", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 3) - 10, 68, (page.Width / 4), 13), XStringFormats.TopLeft);
+            // Create variables for labels with appropriate spacing
+            var dateLabel = "Date: ";
+            var storageLocationLabel = "Storage Location: ";
+            var companyCodeLabel = "Company Code: ";
 
+            // Calculate widths for better positioning
+            float labelWidth = 120; // Adjust this value based on your font and text length
+            double valueStartX = page.Width - (page.Width / 3) - 10 + labelWidth;
+            double valueWidth = (page.Width / 4) - labelWidth;
+
+            // Draw labels with fixed width to prevent overlap
+            gfx.DrawString(dateLabel, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),
+                new XRect(page.Width - (page.Width / 3) - 10, 53, labelWidth, 13), XStringFormats.TopLeft);
+            gfx.DrawString(storageLocationLabel, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),
+                new XRect(page.Width - (page.Width / 3) - 10, 68, labelWidth, 13), XStringFormats.TopLeft);
+            gfx.DrawString(companyCodeLabel, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),
+                new XRect(page.Width - (page.Width / 3) - 10, 83, labelWidth, 13), XStringFormats.TopLeft);
 
             gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 10, 115, page.Width - 10, 115);
 
@@ -195,6 +209,8 @@ namespace TireProject
             if (reportData.Date == null) reportData.Date = "";
             if (reportData.ExtraRefNo == null) reportData.ExtraRefNo = "";
             if (reportData.ExtraDate == null) reportData.ExtraDate = "";
+            if (reportData.CompanyCode == null || string.IsNullOrEmpty(reportData.CompanyCode))
+                reportData.CompanyCode = "TTI";
 
             //Customer Detail
             if (reportData.RefNo == null) reportData.RefNo = "";
@@ -262,9 +278,14 @@ namespace TireProject
             gfx.DrawString(reportData.CompanyName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), 70, 30);
             left.DrawString(reportData.CompanyAddress, new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(70, 38, 250, 78), XStringFormats.TopLeft);
             gfx.DrawString(reportData.RefNo, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 38, (page.Width / 4), 13), XStringFormats.TopRight);
-            gfx.DrawString(reportData.Date, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - (page.Width / 4) - 10, 53, (page.Width / 4), 13), XStringFormats.TopRight);
-            gfx.DrawString(reportData.ExtraRefNo, new XFont(fontName, 10, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(page.Width - 110, 85, 100, 30), XStringFormats.TopRight);
-
+            // Draw values starting to the right of the labels
+            gfx.DrawString(reportData.Date, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),
+                new XRect(valueStartX, 53, valueWidth, 13), XStringFormats.TopLeft);
+            // Using ExtraRefNo as StorageLocation if that property doesn't exist
+            gfx.DrawString(reportData.ExtraRefNo ?? reportData.ExtraRefNo ?? "", new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),
+                new XRect(valueStartX, 68, valueWidth, 13), XStringFormats.TopLeft);
+            gfx.DrawString(reportData.CompanyCode, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)),
+                new XRect(valueStartX, 83, valueWidth, 13), XStringFormats.TopLeft);
             //Customer Detail
             //gfx.DrawString(reportData.RefNo, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 150, (page.Width / 4) - 10, 15), XStringFormats.TopRight);
             //gfx.DrawString(reportData.Date, new XFont(fontName, 12, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 4) + 10, 150, (page.Width / 4) - 20, 15), XStringFormats.TopRight);
