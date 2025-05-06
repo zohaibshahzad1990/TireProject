@@ -8,6 +8,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace TireProject
 {
@@ -514,6 +515,8 @@ namespace TireProject
 
 
             var customWebView = new PdfView() { VerticalOptions = LayoutOptions.FillAndExpand };
+            if (stk.Children.Count > 0)
+                stk.Children.Clear();
 
             stk.Children.Add(customWebView);
             customWebView.Uri = printfilepath;

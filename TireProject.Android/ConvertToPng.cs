@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Android;
+using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Pdf;
@@ -24,12 +25,20 @@ namespace TireProject.Droid
             // Check and request permissions properly with await
             if (!await CheckAndRequestPermissionsAsync())
             {
-                return null; // Permission denied
+                Console.WriteLine("Permission denied");
+                return null;
             }
 
             ParcelFileDescriptor fileDescriptor = null;
             try
             {
+                // Verify the PDF file exists
+                if (!System.IO.File.Exists(PdfPath))
+                {
+                    Console.WriteLine($"PDF file does not exist: {PdfPath}");
+                    return null;
+                }
+
                 fileDescriptor = ParcelFileDescriptor.Open(new Java.IO.File(PdfPath), ParcelFileMode.ReadOnly);
 
                 using (PdfRenderer renderer = new PdfRenderer(fileDescriptor))
@@ -42,40 +51,114 @@ namespace TireProject.Droid
                         {
                             // Create bitmap
                             Bitmap bmp = Bitmap.CreateBitmap(page.Width, page.Height, Bitmap.Config.Argb8888);
+                            if (bmp == null)
+                            {
+                                Console.WriteLine("Failed to create bitmap");
+                                return null;
+                            }
+
                             bmp.EraseColor(Color.White);
                             // Render page as bitmap
                             page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
 
-                            byte[] bitmapData;
-                            using (MemoryStream ms = new MemoryStream())
+                            string outputFileName = $"PdfFile_{DateTime.Now.Ticks}.png";
+                            string outputPath = null;
+
+                            // Try different approaches for different Android versions
+                            try
                             {
-                                bmp.Compress(Bitmap.CompressFormat.Png, 100, ms);
-                                bmp.Recycle();
-                                bitmapData = ms.ToArray();
+                                // First approach - app-specific Pictures directory
+                                var appPicturesDir = Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryPictures);
+                                if (appPicturesDir != null && appPicturesDir.CanWrite())
+                                {
+                                    outputPath = System.IO.Path.Combine(appPicturesDir.AbsolutePath, outputFileName);
+                                    Console.WriteLine($"Using app-specific pictures directory: {outputPath}");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error using app-specific directory: {ex.Message}");
                             }
 
-                            // Use app-specific directory rather than external storage root
-                            string fileName = "PdfFile.png";
-                            string outputPath;
-
-                            if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
+                            // If first approach failed, try alternative 
+                            if (string.IsNullOrEmpty(outputPath))
                             {
-                                // For Android 10 and above, use app-specific directory
-                                outputPath = System.IO.Path.Combine(Android.App.Application.Context.GetExternalFilesDir(null).AbsolutePath, fileName);
+                                try
+                                {
+                                    // Try Downloads directory
+                                    var downloadDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
+                                    if (downloadDir != null && downloadDir.CanWrite())
+                                    {
+                                        outputPath = System.IO.Path.Combine(downloadDir.AbsolutePath, outputFileName);
+                                        Console.WriteLine($"Using Downloads directory: {outputPath}");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Error using Downloads directory: {ex.Message}");
+                                }
+                            }
+
+                            // Final fallback
+                            if (string.IsNullOrEmpty(outputPath))
+                            {
+                                outputPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, outputFileName);
+                                Console.WriteLine($"Using external storage root: {outputPath}");
+                            }
+
+                            Console.WriteLine($"Final output path: {outputPath}");
+
+                            try
+                            {
+                                // Create a clean Java File object
+                                Java.IO.File outputFile = new Java.IO.File(outputPath);
+
+                                // Create a memory stream to hold the bitmap data
+                                using (var memStream = new MemoryStream())
+                                {
+                                    // Compress the bitmap to the memory stream
+                                    bmp.Compress(Bitmap.CompressFormat.Png, 100, memStream);
+
+                                    // Convert to byte array
+                                    byte[] bitmapData = memStream.ToArray();
+
+                                    // Write bytes to file using C# method
+                                    System.IO.File.WriteAllBytes(outputPath, bitmapData);
+                                    Console.WriteLine($"File written successfully to {outputPath}");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error saving bitmap: {ex.Message}");
+                                return null;
+                            }
+
+                            // Recycle bitmap to free resources
+                            bmp.Recycle();
+
+                            // Verify file was created successfully
+                            if (System.IO.File.Exists(outputPath))
+                            {
+                                Console.WriteLine($"File created successfully: {outputPath}");
+
+                                // Make sure the file is accessible by the media scanner
+                                Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+                                Android.Net.Uri contentUri = Android.Net.Uri.FromFile(new Java.IO.File(outputPath));
+                                mediaScanIntent.SetData(contentUri);
+                                Android.App.Application.Context.SendBroadcast(mediaScanIntent);
+
+                                return outputPath;
                             }
                             else
                             {
-                                // For older Android versions
-                                var documentsPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath,
-                                    Android.OS.Environment.DirectoryDownloads);
-                                Directory.CreateDirectory(documentsPath); // Ensure directory exists
-                                outputPath = System.IO.Path.Combine(documentsPath, fileName);
+                                Console.WriteLine("File creation verification failed");
+                                return null;
                             }
-
-                            // Write the file
-                            File.WriteAllBytes(outputPath, bitmapData);
-                            return outputPath;
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("PDF has no pages");
                     }
                 }
             }
@@ -87,7 +170,10 @@ namespace TireProject.Droid
             }
             finally
             {
-                fileDescriptor?.Close();
+                if (fileDescriptor != null)
+                {
+                    fileDescriptor.Close();
+                }
             }
 
             return null;
