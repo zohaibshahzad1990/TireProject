@@ -34,6 +34,7 @@ namespace TireProjectNewWebApi.Controllers
                     Id = null,
                     CompanyLogo = item.CompanyLogo,
                     CompanyName = item.CompanyName,
+                    CompanyCode = item.CompanyCode,
                     CompanyAddress = item.CompanyAddress,
                     TermCondition = item.TermCondition,
                     RefNo = item.RefNo,

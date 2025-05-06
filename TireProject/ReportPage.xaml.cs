@@ -23,13 +23,99 @@ namespace TireProject
         string fieldname = "Name";
         GetOnlineData post = new GetOnlineData();
         List<ReportData> ll = new List<ReportData>();
-        int fieldtype=0;
+        int fieldtype = 0;
         int tireseason = 0;
         string location = "ALL";
         string ssqz = $"{Constants.BASE_URL}/api/mains/customexport/02-28-2019/03-09-2019/0/NA/0/ALL/";
+
+        // Dictionary to store all location buttons for easy access
+        private Dictionary<string, Button> locationButtons = new Dictionary<string, Button>();
+        private List<string> warehouseCodes = new List<string>();
+
         public ReportPage()
         {
             InitializeComponent();
+
+            // Setup location buttons after initialization
+            SetupLocationButtons();
+        }
+
+        private void SetupLocationButtons()
+        {
+            // Get warehouse codes from application properties
+            if (Application.Current.Properties.ContainsKey("WLocations"))
+            {
+                string warehouseCodesStr = Application.Current.Properties["WLocations"].ToString();
+                warehouseCodes = warehouseCodesStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim())
+                    .ToList();
+            }
+            else
+            {
+                // Fallback to default codes if property doesn't exist
+                warehouseCodes = new List<string> { "HR", "FV", "DC", "OR", "UT" };
+            }
+
+            // Setup the grid for buttons
+            locationButtonsGrid.Children.Clear();
+            locationButtonsGrid.RowDefinitions.Clear();
+            locationButtonsGrid.ColumnDefinitions.Clear();
+
+            // Add column definitions for a 2-column grid
+            locationButtonsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            locationButtonsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            // Calculate how many rows we need
+            int rowsNeeded = (int)Math.Ceiling((warehouseCodes.Count + 1) / 2.0); // +1 for ALL button
+
+            // Add row definitions
+            for (int i = 0; i < rowsNeeded; i++)
+            {
+                locationButtonsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            }
+
+            // Add ALL button first
+            var allButton = new Button
+            {
+                Text = "ALL",
+                BackgroundColor = Color.FromHex("#e74c3c"),
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            allButton.Clicked += EveBtnlocation;
+            locationButtonsGrid.Children.Add(allButton, 0, 0);
+            Grid.SetColumnSpan(allButton, 2);
+            locationButtons.Add("ALL", allButton);
+
+            // Add location buttons
+            int row = 1;
+            int column = 0;
+
+            foreach (var code in warehouseCodes)
+            {
+                var button = new Button
+                {
+                    Text = code,
+                    BackgroundColor = Color.White,
+                    TextColor = Color.FromHex("#e74c3c"),
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    VerticalOptions = LayoutOptions.CenterAndExpand
+                };
+
+                button.Clicked += EveBtnlocation;
+                locationButtonsGrid.Children.Add(button, column, row);
+                locationButtons.Add(code, button);
+
+                // Move to next column or row
+                column++;
+                if (column > 1)
+                {
+                    column = 0;
+                    row++;
+                }
+            }
         }
 
         public async Task RunFirst()
@@ -43,8 +129,6 @@ namespace TireProject
             {
                 var request = $"{Constants.BASE_URL}/api/mains/customexport/";
                 // +  + "/" +  + "/" +  + "/" +  + "/" +  + "/"
-
-
 
                 var json = JsonConvert.SerializeObject(new TempDataPass(datefrom.Date.ToString("yyyy-MM-dd"),
                     dateto.Date.ToString("yyyy-MM-dd"), fieldtype, tireseason, location
@@ -144,9 +228,6 @@ namespace TireProject
                             if (item.TireStoredUpto == null) item.TireStoredUpto = "null";
                             if (item.REP == null) item.REP = "null";
 
-
-
-
                             //Vehicle Detail
                             if (item.PlateNo == null) item.PlateNo = "null";
                             if (item.CarYear == null) item.CarYear = "null";
@@ -176,7 +257,6 @@ namespace TireProject
 
                         if (System.IO.File.Exists(path))
                         {
-
                             busymsg.Text = "Successfully Exported!";
                             btnDone.IsVisible = true;
                         }
@@ -187,19 +267,22 @@ namespace TireProject
                     }
 
                 }
-                else {
+                else
+                {
                     busymsg.Text = "Something Wrong With Exporting Data!";
                 }
 
                 busyind.IsVisible = false;
                 busyind.IsRunning = false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
+                busymsg.Text = "Error: " + ex.Message;
+                busyind.IsVisible = false;
+                busyind.IsRunning = false;
             }
-
         }
+
         /* To create cell in Excel */
         private DocumentFormat.OpenXml.Spreadsheet.Cell ConstructCell(string value, CellValues dataType)
         {
@@ -218,10 +301,6 @@ namespace TireProject
                 await Launcher.OpenAsync
                             (new OpenFileRequest("Excel File", new ReadOnlyFile(FilePath))
                         );
-            //await DisplayAlert("File Saved",FilePath,"Okay");
-
-
-            //DependencyService.Get<IFileSave>().OpenExcel(FilePath);
             getcomad.IsEnabled = true;
         }
 
@@ -235,7 +314,6 @@ namespace TireProject
             getcomad.IsEnabled = true;
         }
 
-        
         void EveBtnRimType(object sender, System.EventArgs e)
         {
             var getcommand = (Button)sender;
@@ -269,19 +347,21 @@ namespace TireProject
         {
             var getcommand = (Button)sender;
             getcommand.IsEnabled = false;
-            a1.BackgroundColor = Color.White;
-            a1.TextColor = Color.FromHex("#e74c3c");
-            a2.BackgroundColor = Color.White;
-            a2.TextColor = Color.FromHex("#e74c3c");
-            a3.BackgroundColor = Color.White;
-            a3.TextColor = Color.FromHex("#e74c3c");
-            a4.BackgroundColor = Color.White;
-            a4.TextColor = Color.FromHex("#e74c3c");
-			a5.BackgroundColor = Color.White;
-			a5.TextColor = Color.FromHex("#e74c3c");
-			getcommand.BackgroundColor = Color.FromHex("#e74c3c");
+
+            // Reset all location buttons to default state
+            foreach (var btn in locationButtons.Values)
+            {
+                btn.BackgroundColor = Color.White;
+                btn.TextColor = Color.FromHex("#e74c3c");
+            }
+
+            // Highlight the selected button
+            getcommand.BackgroundColor = Color.FromHex("#e74c3c");
             getcommand.TextColor = Color.White;
+
+            // Set the selected location
             location = getcommand.Text;
+
             getcommand.IsEnabled = true;
         }
 
@@ -297,6 +377,7 @@ namespace TireProject
             fieldtype = 0;
             getcommand.IsEnabled = true;
         }
+
         void EveBtnChecked2(object sender, System.EventArgs e)
         {
             var getcommand = (Button)sender;
@@ -309,6 +390,7 @@ namespace TireProject
             fieldtype = 1;
             getcommand.IsEnabled = true;
         }
+
         void EveBtnChecked3(object sender, System.EventArgs e)
         {
             var getcommand = (Button)sender;
