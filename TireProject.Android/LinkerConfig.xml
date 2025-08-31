@@ -1,0 +1,6 @@
+﻿<linker>
+	<assembly fullname="PdfSharp">
+		<type fullname="PdfSharp.Fonts.IFontResolverMarker" preserve="all"/>
+	</assembly>
+	<assembly fullname="PdfSharp.Quality" preserve="all"/>
+</linker>
