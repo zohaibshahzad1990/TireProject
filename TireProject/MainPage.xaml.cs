@@ -383,16 +383,16 @@ namespace TireProject
             HidePrint();
             getCommand.IsEnabled = true;
         }
-        //async void EvePrintA6(object sender, System.EventArgs e)
-        //{
-        //    var getCommand = (Button)sender;
-        //    getCommand.IsEnabled = false;
-        //    //await Navigation.PushAsync(new PrintTirelabelPage(report));
-        //    await Navigation.PushAsync(new PrintTireLabelPdfPage(report));
-        //    //var action= await DisplayActionSheet((("Select Page Size", "A4", "A6");
-        //    HidePrint();
-        //    getCommand.IsEnabled = true;
-        //}
+        async void EvePrintA6(object sender, System.EventArgs e)
+        {
+            var getCommand = (Button)sender;
+            getCommand.IsEnabled = false;
+            //await Navigation.PushAsync(new PrintTirelabelPage(report));
+            await Navigation.PushAsync(new PrintTireLabelPdfPage(report));
+            //var action= await DisplayActionSheet((("Select Page Size", "A4", "A6");
+            HidePrint();
+            getCommand.IsEnabled = true;
+        }
 
         async void EveSort1(object sender, System.EventArgs e)
         {
