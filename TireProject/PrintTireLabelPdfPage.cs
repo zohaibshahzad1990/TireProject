@@ -125,6 +125,10 @@ namespace TireProject
             var systemHelper = DependencyService.Get<ISystemHelper>();
             var fontName = systemHelper.GetDefaultSystemFont();
 
+            // Set default company code if not provided
+            if (reportData.CompanyCode == null || string.IsNullOrEmpty(reportData.CompanyCode))
+                reportData.CompanyCode = "TTI";
+
             // Fonts for different sections
             XFont headerFont = new XFont(fontName, 18, XFontStyleEx.Bold);
             XFont subheaderFont = new XFont(fontName, 14);
@@ -241,10 +245,9 @@ namespace TireProject
             gfx.DrawString(dateTimeStr, normalFont, XBrushes.Black, xStart + usableWidth / 2, currentY + normalFont.Height);
             currentY += normalFont.Height + 5;
 
-            // Location indicators - more compact with horizontal layout
-            gfx.DrawString("L", normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
-            gfx.DrawString("O", normalFont, XBrushes.Black, xStart + 30, currentY + normalFont.Height);
-            gfx.DrawString("C", normalFont, XBrushes.Black, xStart + 60, currentY + normalFont.Height);
+            // Location indicators with company code and storage location
+            string locText = $"LOC: {reportData.CompanyCode} - {reportData.ExtraRefNo ?? ""}";
+            gfx.DrawString(locText, normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
             currentY += normalFont.Height + 5;
 
             // Calculate remaining space
