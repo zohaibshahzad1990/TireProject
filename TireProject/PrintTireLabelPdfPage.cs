@@ -245,9 +245,14 @@ namespace TireProject
             gfx.DrawString(dateTimeStr, normalFont, XBrushes.Black, xStart + usableWidth / 2, currentY + normalFont.Height);
             currentY += normalFont.Height + 5;
 
-            // Location indicators with company code and storage location
-            string locText = $"LOC: {reportData.CompanyCode} - {reportData.ExtraRefNo ?? ""}";
-            gfx.DrawString(locText, normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
+            // Location indicators - more compact with horizontal layout
+            gfx.DrawString("L", normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
+            gfx.DrawString("O", normalFont, XBrushes.Black, xStart + 30, currentY + normalFont.Height);
+            gfx.DrawString("C", normalFont, XBrushes.Black, xStart + 60, currentY + normalFont.Height);
+
+            // Add company code and storage location next to LOC
+            string companyStorageText = $"{reportData.CompanyCode} - {reportData.ExtraRefNo ?? ""}";
+            gfx.DrawString(companyStorageText, normalFont, XBrushes.Black, xStart + 90, currentY + normalFont.Height);
             currentY += normalFont.Height + 5;
 
             // Calculate remaining space
