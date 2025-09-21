@@ -278,10 +278,12 @@ namespace TireProject
 
                     if (qrCodeBytes != null && qrCodeBytes.Length > 0)
                     {
-                        // Convert byte array to XImage
-                        using (var stream = new MemoryStream(qrCodeBytes))
+                        // Save QR code to temporary file and load as XImage
+                        var tempQrPath = Path.Combine(systemHelper.GetTemporaryDirectory(), $"qr_{Guid.NewGuid()}.png");
+                        try
                         {
-                            XImage xImage = XImage.FromStream(stream);
+                            File.WriteAllBytes(tempQrPath, qrCodeBytes);
+                            XImage xImage = XImage.FromFile(tempQrPath);
 
                             // Calculate position for QR code to center it
                             double qrX = xStart + (usableWidth - qrCodeSize) / 2;
@@ -289,6 +291,16 @@ namespace TireProject
                             // Draw QR code
                             gfx.DrawImage(xImage, qrX, currentY, qrCodeSize, qrCodeSize);
                             currentY += qrCodeSize + 5;
+
+                            xImage.Dispose();
+                        }
+                        finally
+                        {
+                            // Clean up temporary file
+                            if (File.Exists(tempQrPath))
+                            {
+                                try { File.Delete(tempQrPath); } catch { }
+                            }
                         }
 
                         // Check if we have room for the text
@@ -318,102 +330,12 @@ namespace TireProject
                     throw new Exception("Scanner service not found");
                 }
             }
-            catch (Exception ex)
-            {
-                // Fall back to drawing a QR code-like pattern
-                DrawFallbackQRCode(gfx, qrCodeData, xStart, currentY, usableWidth, height - currentY - margin,
-                    normalFont, smallFont, qrTextData);
-            }
-        }
-
-        private void DrawFallbackQRCode(XGraphics gfx, string qrCodeData, double xStart, double currentY,
-            double usableWidth, double maxHeight, XFont normalFont, XFont smallFont, string qrTextData)
-        {
-            try
-            {
-                // Calculate maximum QR code size based on available space
-                double qrSize = Math.Min(maxHeight - 15, 130); // Reserve 15 points for text, max 130
-                if (qrSize < 80) qrSize = 80; // Minimum size for visibility
-
-                double qrX = xStart + (usableWidth - qrSize) / 2;
-
-                // QR code frame - outer border
-                gfx.DrawRectangle(new XPen(XColors.Black, 1), qrX, currentY, qrSize, qrSize);
-
-                // Draw position detection patterns (the three big squares in corners)
-                DrawPositionDetectionPattern(gfx, qrX, currentY, qrSize * 0.3);
-                DrawPositionDetectionPattern(gfx, qrX + qrSize - (qrSize * 0.3), currentY, qrSize * 0.3);
-                DrawPositionDetectionPattern(gfx, qrX, currentY + qrSize - (qrSize * 0.3), qrSize * 0.3);
-
-                // Draw some data cells in a pattern that resembles a QR code
-                int gridSize = 10; // Number of cells in the QR grid
-                double cellSize = qrSize / gridSize;
-
-                Random rand = new Random(qrCodeData.GetHashCode()); // Use data as seed for consistent pattern
-                for (int i = 0; i < gridSize; i++)
-                {
-                    for (int j = 0; j < gridSize; j++)
-                    {
-                        // Skip the position detection patterns
-                        if ((i < 3 && j < 3) || (i < 3 && j >= gridSize - 3) || (i >= gridSize - 3 && j < 3))
-                            continue;
-
-                        // Randomly fill some cells to look like a QR code
-                        if (rand.NextDouble() > 0.6)
-                        {
-                            gfx.DrawRectangle(XBrushes.Black,
-                                qrX + (j * cellSize),
-                                currentY + (i * cellSize),
-                                cellSize,
-                                cellSize);
-                        }
-                    }
-                }
-
-                currentY += qrSize + 5;
-
-                // Check if we have room for the text
-                if (currentY + 10 <= maxHeight)
-                {
-                    // Add QR code data as text below the QR code
-                    XSize qrTextSize = gfx.MeasureString(qrTextData, smallFont);
-                    string displayText = qrTextData;
-                    if (qrTextSize.Width > usableWidth - 20)
-                    {
-                        int charLimit = (int)((usableWidth - 20) / (qrTextSize.Width / qrTextData.Length));
-                        displayText = qrTextData.Substring(0, Math.Min(charLimit, qrTextData.Length)) + "...";
-                    }
-                    gfx.DrawString(displayText, smallFont, XBrushes.Black,
-                        xStart + (usableWidth - gfx.MeasureString(displayText, smallFont).Width) / 2,
-                        currentY + smallFont.Height);
-                }
-            }
             catch (Exception)
             {
-                // Last resort: just add placeholder text if we have room
-                if (maxHeight >= 50)
-                {
-                    gfx.DrawString("QR Code would appear here", normalFont, XBrushes.Black,
-                        xStart + 20, currentY + 25);
-                }
+                // QR code generation failed - continue without QR code
             }
         }
 
-        private void DrawPositionDetectionPattern(XGraphics gfx, double x, double y, double size)
-        {
-            // Draw the outer square
-            gfx.DrawRectangle(XBrushes.Black, x, y, size, size);
-
-            // Draw the inner white square
-            double innerSize = size * 0.7;
-            double innerOffset = (size - innerSize) / 2;
-            gfx.DrawRectangle(XBrushes.White, x + innerOffset, y + innerOffset, innerSize, innerSize);
-
-            // Draw the inner black square
-            double centerSize = size * 0.3;
-            double centerOffset = (size - centerSize) / 2;
-            gfx.DrawRectangle(XBrushes.Black, x + centerOffset, y + centerOffset, centerSize, centerSize);
-        }
 
         async void EvePrint(object sender, EventArgs e)
         {

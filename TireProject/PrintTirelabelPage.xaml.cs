@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -22,7 +22,6 @@ namespace TireProject
             InitializeComponent();
             stkmain.IsVisible = false;
             printbtn.IsEnabled = true;
-
         }
 
         public PrintTirelabelPage(ReportData reportData)
@@ -34,230 +33,265 @@ namespace TireProject
 
         async Task PageRun(ReportData reportData)
         {
-            lblbusy.Text = "Loading Info From Server...";
-            await Task.Delay(2000);
-            busy.IsVisible = true;
-            busy.IsRunning = true;
-            lblbusy.IsVisible = true;
-            stkmain.IsVisible = true;
+            try
+            {
+                lblbusy.Text = "Loading Info From Server...";
+                await Task.Delay(2000);
+                busy.IsVisible = true;
+                busy.IsRunning = true;
+                lblbusy.IsVisible = true;
+                stkmain.IsVisible = true;
+
+                // Set default company code if not provided
+                if (reportData.CompanyCode == null || string.IsNullOrEmpty(reportData.CompanyCode))
+                    reportData.CompanyCode = "TTI";
+
+                var systemHelper = DependencyService.Get<ISystemHelper>();
+                var document = new PdfDocument();
+                document.Info.Title = "Tire Labels";
+
+                var page = document.AddPage();
+                page.Size = PdfSharp.PageSize.A4;
+                var gfx = XGraphics.FromPdfPage(page);
+
+                // Calculate dimensions for 4 labels on A4 page
+                double pageWidth = page.Width;
+                double pageHeight = page.Height;
+                double labelWidth = pageWidth / 2;
+                double labelHeight = pageHeight / 2;
+
+                // Draw 4 labels in a 2x2 grid
+                DrawLabel(gfx, reportData, 0, 0, labelWidth, labelHeight);                    // Top-left
+                DrawLabel(gfx, reportData, labelWidth, 0, labelWidth, labelHeight);          // Top-right
+                DrawLabel(gfx, reportData, 0, labelHeight, labelWidth, labelHeight);         // Bottom-left
+                DrawLabel(gfx, reportData, labelWidth, labelHeight, labelWidth, labelHeight); // Bottom-right
+
+                lblbusy.Text = "Successfully Loaded!";
+
+                // Save the PDF
+                printfilepath = Path.Combine(systemHelper.GetTemporaryDirectory(), "test.pdf");
+                document.Save(printfilepath);
+
+                // Display the PDF
+                var customWebView = new PdfView() { VerticalOptions = LayoutOptions.FillAndExpand };
+                stk.Children.Add(customWebView);
+                customWebView.Uri = printfilepath;
+
+                printbtn.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                lblbusy.Text = "Error generating labels.";
+                await DisplayAlert("Error", $"Could not generate labels: {ex.Message}", "OK");
+            }
+            finally
+            {
+                busy.IsVisible = false;
+                busy.IsRunning = false;
+                lblbusy.IsVisible = false;
+                stkmain.IsVisible = false;
+            }
+        }
+
+        private void DrawLabel(XGraphics gfx, ReportData reportData, double x, double y, double width, double height)
+        {
             var systemHelper = DependencyService.Get<ISystemHelper>();
-            var document = new PdfDocument();
-
-            var page = document.AddPage();
-            page.Size= PdfSharp.PageSize.Letter;
-            page.TrimMargins.Top = 35;
-            page.TrimMargins.Bottom = 35;
-            var gfx = XGraphics.FromPdfPage(page);
-            XTextFormatter left = new XTextFormatter(gfx);
-            left.Alignment = XParagraphAlignment.Left;
-            XTextFormatter right = new XTextFormatter(gfx);
-            right.Alignment = XParagraphAlignment.Right;
-            XTextFormatter justify = new XTextFormatter(gfx);
-            justify.Alignment = XParagraphAlignment.Justify;
-            XTextFormatter center = new XTextFormatter(gfx);
-            center.Alignment = XParagraphAlignment.Center;
-
             var fontName = systemHelper.GetDefaultSystemFont();
 
-            var font = new XFont(fontName, 20);
-            var fontBold = new XFont(fontName, 20, XFontStyleEx.Regular);
-            var fontItalic = new XFont(fontName, 20, XFontStyleEx.Italic);
+            // Set default company code if not provided
+            if (reportData.CompanyCode == null || string.IsNullOrEmpty(reportData.CompanyCode))
+                reportData.CompanyCode = "TTI";
 
-            data.RefNo = data.RefNo != null ? data.RefNo : "null";
-            data.TireStoredUpto = data.TireStoredUpto != null ? data.TireStoredUpto : "null";
-            data.FName = data.FName != null ? data.FName : "null";
-            data.ExtraRefNo = data.ExtraRefNo != null ? data.ExtraRefNo : "null";
+            // Fonts for different sections
+            XFont headerFont = new XFont(fontName, 14, XFontStyleEx.Bold);
+            XFont subheaderFont = new XFont(fontName, 10);
+            XFont plateFont = new XFont(fontName, 32, XFontStyleEx.Bold);
+            XFont carInfoFont = new XFont(fontName, 14, XFontStyleEx.Bold);
+            XFont normalFont = new XFont(fontName, 8);
+            XFont smallFont = new XFont(fontName, 6);
 
-            string value = "TOTAL TIRE INC" + "\n" +
-                data.RefNo + "\n"+
-                data.TireStoredUpto + "\n" +
-                            data.FName + "\n" +
-                            data.ExtraRefNo;
-            int ii = value.Length;
+            // Clean data inputs
+            string plateNo = reportData.PlateNo?.Replace(" ", "") ?? "";
+            string carInfo = $"{reportData.CarBrand} {reportData.CarModel}";
+            string makeModel = reportData.MakeModel ?? "";
+            string tireSize = reportData.TireSize1 ?? "";
+            string tireQty = $"Qty: {reportData.NoOfTires}";
+            string customerName = $"{reportData.FName} {reportData.LName}";
+            string dateTimeStr = DateTime.Now.ToLocalTime().ToString("dd-MM-yyyy");
 
-            string DateTimeStr = DateTime.Now.ToLocalTime().ToString("dd-MM-yyyy");
-            string sst = "";
-            //Checked Box Season
-            switch (data.TireSeason)
+            // Determine tire season text
+            string seasonText = "";
+            switch (reportData.TireSeason)
             {
                 case ETireSeason.AllSeason:
-                    sst = "All Seasons";
+                    seasonText = "All Seasons";
                     break;
                 case ETireSeason.Summer:
-                    sst = ETireSeason.Summer.ToString();
+                    seasonText = "Summer";
                     break;
                 case ETireSeason.Winter:
-                    sst = ETireSeason.Winter.ToString();
+                    seasonText = "Winter";
                     break;
                 case ETireSeason.Other:
-                    sst = ETireSeason.Other.ToString();
-                    break;
-                default:
+                    seasonText = "Other";
                     break;
             }
 
-            //var tempPath = Path.Combine(Path.GetTempPath(), "imgdownload4.png");
-            //var br = DependencyService.Get<IScanner>().GenerateBarcode(value, ZXing.BarcodeFormat.CODE_128);
-            //File.WriteAllBytes(tempPath, br);
+            // Create QR code data with pipe separators
+            string qrCodeData = $"TOTAL TIRE INC|{reportData.RefNo}|{reportData.TireStoredUpto}|{reportData.FName}|{reportData.ExtraRefNo}";
 
-            //gfx.DrawImage(XImage.FromFile(tempPath),new XRect(100,20,page.Width-200, (page.Height - 100) / 4));
-            //gfx.DrawImage(XImage.FromFile(tempPath), new XRect(100, ((page.Height - 100) / 4)+40, page.Width - 200, (page.Height - 100) / 4));
-            //gfx.DrawImage(XImage.FromFile(tempPath), new XRect(100, ((page.Height - 100) / 4)*2 + 60, page.Width - 200, (page.Height - 100) / 4));
-            //gfx.DrawImage(XImage.FromFile(tempPath), new XRect(100, ((page.Height - 100) / 4) * 3 + 80, page.Width - 200, (page.Height - 100) / 4));
+            // Text representation of QR code data
+            string qrTextData = $"TOTAL TIRE INC {reportData.RefNo} {reportData.TireStoredUpto} {reportData.FName} {reportData.ExtraRefNo}";
 
+            // Margins inside the label
+            double margin = 5;
+            double xStart = x + margin;
+            double yStart = y + margin;
+            double usableWidth = width - (2 * margin);
 
+            // Start drawing from top
+            double currentY = yStart;
 
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0),2), 0, page.Height/2, page.Width, page.Height / 2);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0), 2), page.Width / 2, 0, page.Width/2, page.Height);
+            // Company header - centered
+            string companyName = "TOTAL TIRE INC";
+            string companyPhone = "905-632-3500";
+            XSize companyNameSize = gfx.MeasureString(companyName, headerFont);
+            XSize companyPhoneSize = gfx.MeasureString(companyPhone, subheaderFont);
 
+            gfx.DrawString(companyName, headerFont, XBrushes.Black,
+                xStart + (usableWidth - companyNameSize.Width) / 2, currentY + companyNameSize.Height);
+            currentY += companyNameSize.Height + 2;
 
-            var platnotemp = data.PlateNo.Replace(" ","");
+            gfx.DrawString(companyPhone, subheaderFont, XBrushes.Black,
+                xStart + (usableWidth - companyPhoneSize.Width) / 2, currentY + companyPhoneSize.Height);
+            currentY += companyPhoneSize.Height + 2;
 
-            //1
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 35, page.Width / 2, 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 45, (page.Width / 2) - 20, 70), XStringFormats.Center);
+            // Horizontal line
+            gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
+            currentY += 5;
 
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 130, page.Width / 2, 130);
-            gfx.DrawString(data.CarBrand+" "+ data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 180, page.Width / 2, 180);
+            // Plate number (large center text)
+            XSize plateSize = gfx.MeasureString(plateNo, plateFont);
+            gfx.DrawString(plateNo, plateFont, XBrushes.Black,
+                xStart + (usableWidth - plateSize.Width) / 2, currentY + plateSize.Height);
+            currentY += plateSize.Height + 3;
 
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            // Horizontal line
+            gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
+            currentY += 3;
 
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2)-20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: "+data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+            // Car info section
+            XSize carInfoSize = gfx.MeasureString(carInfo, carInfoFont);
+            gfx.DrawString(carInfo, carInfoFont, XBrushes.Black,
+                xStart + (usableWidth - carInfoSize.Width) / 2, currentY + carInfoSize.Height);
+            currentY += carInfoSize.Height + 3;
 
-            gfx.DrawString(data.FName+" " + data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            // Horizontal line
+            gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
+            currentY += 3;
 
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, 270, page.Width / 2, 270);
+            // Make/model centered
+            XSize makeModelSize = gfx.MeasureString(makeModel, normalFont);
+            gfx.DrawString(makeModel, normalFont, XBrushes.Black,
+                xStart + (usableWidth - makeModelSize.Width) / 2, currentY + makeModelSize.Height);
+            currentY += makeModelSize.Height + 3;
 
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)/2)-30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
+            // Tire info in three columns
+            double columnWidth = usableWidth / 3;
+            gfx.DrawString(tireSize, normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
+            gfx.DrawString(tireQty, normalFont, XBrushes.Black, xStart + columnWidth, currentY + normalFont.Height);
+            gfx.DrawString(seasonText, normalFont, XBrushes.Black, xStart + 2 * columnWidth, currentY + normalFont.Height);
+            currentY += normalFont.Height + 3;
 
+            // Customer name centered
+            XSize customerNameSize = gfx.MeasureString(customerName, normalFont);
+            gfx.DrawString(customerName, normalFont, XBrushes.Black,
+                xStart + (usableWidth - customerNameSize.Width) / 2, currentY + customerNameSize.Height);
+            currentY += customerNameSize.Height + 3;
 
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
+            // Horizontal line
+            gfx.DrawLine(new XPen(XColors.Black, 1), xStart, currentY, xStart + usableWidth, currentY);
+            currentY += 3;
 
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            // Date and REP info in two columns
+            gfx.DrawString(reportData.REP, normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
+            gfx.DrawString(dateTimeStr, normalFont, XBrushes.Black, xStart + usableWidth / 2, currentY + normalFont.Height);
+            currentY += normalFont.Height + 3;
 
-            //2
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), 35, page.Width, 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 45, (page.Width / 2) - 20, 70), XStringFormats.Center);
+            // Location indicators with company code and storage location
+            gfx.DrawString("L", normalFont, XBrushes.Black, xStart, currentY + normalFont.Height);
+            gfx.DrawString("O", normalFont, XBrushes.Black, xStart + 15, currentY + normalFont.Height);
+            gfx.DrawString("C", normalFont, XBrushes.Black, xStart + 30, currentY + normalFont.Height);
 
+            // Add company code and storage location next to LOC
+            string companyStorageText = $"{reportData.CompanyCode} - {reportData.ExtraRefNo ?? ""}";
+            gfx.DrawString(companyStorageText, normalFont, XBrushes.Black, xStart + 45, currentY + normalFont.Height);
+            currentY += normalFont.Height + 3;
 
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, 130, page.Width , 130);
-            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, 180, page.Width , 180);
+            // Calculate remaining space for QR code
+            double remainingSpace = (y + height) - currentY - margin;
+            double qrCodeSize = Math.Min(remainingSpace - 10, 80);
 
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+            // Generate and add QR code
+            try
+            {
+                // Use the platform-specific QR code generator through IScanner
+                var scanner = DependencyService.Get<IScanner>();
+                if (scanner != null)
+                {
+                    byte[] qrCodeBytes = scanner.GenerateBarcode(qrCodeData, ZXing.BarcodeFormat.QR_CODE);
 
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
+                    if (qrCodeBytes != null && qrCodeBytes.Length > 0)
+                    {
+                        // Save QR code to temporary file and load as XImage
+                        var tempQrPath = Path.Combine(systemHelper.GetTemporaryDirectory(), $"qr_{Guid.NewGuid()}.png");
+                        try
+                        {
+                            File.WriteAllBytes(tempQrPath, qrCodeBytes);
+                            XImage xImage = XImage.FromFile(tempQrPath);
 
-            gfx.DrawString(data.FName +" " + data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
+                            // Calculate position for QR code to center it
+                            double qrX = xStart + (usableWidth - qrCodeSize) / 2;
 
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), 270, page.Width, 270);
+                            // Draw QR code
+                            gfx.DrawImage(xImage, qrX, currentY, qrCodeSize, qrCodeSize);
+                            currentY += qrCodeSize + 2;
 
+                            xImage.Dispose();
+                        }
+                        finally
+                        {
+                            // Clean up temporary file
+                            if (File.Exists(tempQrPath))
+                            {
+                                try { File.Delete(tempQrPath); } catch { }
+                            }
+                        }
 
-            
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
-
-
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, ((page.Height) / 2) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
-
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-
-            //3
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2)+35, page.Width / 2, (page.Height / 2) + 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2)+45, (page.Width / 2) - 20, 70), XStringFormats.Center);
-
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2) +130, page.Width / 2, (page.Height / 2)+ 130);
-            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2) + 180, page.Width / 2, (page.Height / 2)+ 180);
-
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
-
-            gfx.DrawString(data.FName + " " + data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height / 2) + 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), 0, (page.Height / 2) + 270, page.Width / 2, (page.Height / 2) + 270);
-
-
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
-
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
-            
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2)+ 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2) + 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect(10, (page.Height/2) + 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-            //4
-            gfx.DrawString("TOTAL TIRE INC", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 10, (page.Width / 2) - 10, 13), XStringFormats.TopLeft);
-            gfx.DrawString("905-632-3500", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 10, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), (page.Height / 2) + 35, page.Width, (page.Height / 2) + 35);
-            gfx.DrawString(platnotemp, new XFont(fontName, 70, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, (page.Height / 2)+45, (page.Width / 2) - 20, 70), XStringFormats.Center);
-
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, (page.Height / 2) + 130, page.Width , (page.Height / 2) + 130);
-            gfx.DrawString(data.CarBrand + " " + data.CarModel, new XFont(fontName, 30, XFontStyleEx.Bold), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 140, (page.Width / 2) - 20, 30), XStringFormats.Center);
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), page.Width / 2, (page.Height / 2) + 180, page.Width , (page.Height / 2) + 180);
-
-            gfx.DrawString(data.MakeModel, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 190, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-            gfx.DrawString(data.TireSize1, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("Qty: " + data.NoOfTires, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopCenter);
-            gfx.DrawString(sst, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 215, (page.Width / 2) - 20, 13), XStringFormats.TopRight);
-
-            gfx.DrawString(data.FName+" "+ data.LName, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 240, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-            gfx.DrawLine(new XPen(XColor.FromArgb(0, 0, 0)), (page.Width / 2), (page.Height / 2) + 270, page.Width, (page.Height / 2) + 270);
-
-            gfx.DrawString(DateTimeStr, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2)+10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.CenterRight);
-
-            gfx.DrawString(reportData.REP, new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, ((page.Height)) - 30, (page.Width / 2) - 20, 13), XStringFormats.Center);
-
-            
-            gfx.DrawString("L", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 280, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("O", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 310, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-            gfx.DrawString("C", new XFont(fontName, 13, XFontStyleEx.Regular), new XSolidBrush(XColor.FromArgb(0, 0, 0)), new XRect((page.Width / 2) + 10, (page.Height / 2) + 340, (page.Width / 2) - 20, 13), XStringFormats.TopLeft);
-
-            lblbusy.Text = "Successfully Loaded!";
-            //////////////////////////
-            printfilepath = Path.Combine(systemHelper.GetTemporaryDirectory(), "test.pdf");
-            document.Save(printfilepath);
-
-            var customWebView = new PdfView() { VerticalOptions = LayoutOptions.FillAndExpand
-            };
-            stk.Children.Add(customWebView);
-
-            customWebView.Uri = printfilepath;
-
-            //App.pdfpath = printfilepath;
-            //stk.Uri = Path.GetFileName(printfilepath);
-            //stk.On<Xamarin.Forms.PlatformConfiguration.Android>().EnableZoomControls(true);
-            //stk.On<Xamarin.Forms.PlatformConfiguration.Android>().DisplayZoomControls(false);
-
-
-
-            //customWebView.Path = printfilepath;
-            printbtn.IsEnabled = true;
-            busy.IsVisible = false;
-            busy.IsRunning = false;
-            lblbusy.IsVisible = false;
-            stkmain.IsVisible = false;
+                        // Check if we have room for the text
+                        if (currentY + 8 <= (y + height) - margin)
+                        {
+                            // Add QR code data as text below the QR code
+                            XSize qrTextSize = gfx.MeasureString(qrTextData, smallFont);
+                            string displayText = qrTextData;
+                            if (qrTextSize.Width > usableWidth - 10)
+                            {
+                                int charLimit = (int)((usableWidth - 10) / (qrTextSize.Width / qrTextData.Length));
+                                displayText = qrTextData.Substring(0, Math.Min(charLimit, qrTextData.Length)) + "...";
+                            }
+                            gfx.DrawString(displayText, smallFont, XBrushes.Black,
+                                xStart + (usableWidth - gfx.MeasureString(displayText, smallFont).Width) / 2,
+                                currentY + smallFont.Height);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // QR code generation failed - continue without QR code
+            }
         }
+
 
         async void EvePrint(object sender, System.EventArgs e)
         {
